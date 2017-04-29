@@ -2,25 +2,38 @@
 // External Modules -----------------------------------------------------
 const express = require('express');
 
+// My own Modules ------------------------------------------------------
+const User = require('../models/user');
+
 // Definitions ---------------------------------------------------------
 const router = express.Router();
 
 // APIs ----------------------------------------------------------------
-router.get('/register', (req, res, next) => {
-  res.send('Register page');
+router.post('/register', (req, res, next) => {
+/*  let newUser = new User({
+    name: req.body.name,
+    email: req.body.email,
+    username: req.body.username,
+    password: req.body.password
+  });*/
+
+  User.addUser(req.body, (err, user) => {
+    if(err) {
+      res.json({success: false, msg: 'Failed to register user'});
+    }
+    else {
+      res.json({success: true, msg: 'User registered'});
+    } 
+  });
 });
 
-router.get('/authenticate', (req, res, next) => {
+router.post('/authenticate', (req, res, next) => {
   res.send('Authenticate page');
 });
 
 router.get('/profile', (req, res, next) => {
+  console.log('Enviando Profile');
   res.send('Profile page');
-});
-
-// TODO verify if i really use this
-router.get('/validate', (req, res, next) => {
-  res.send('Validate page');
 });
 
 module.exports = router;

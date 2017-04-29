@@ -13,19 +13,7 @@ const config = require('./config/database');
 
 // Definitions----------------------------------------------------------
 const server = express();
-const port = 3000;
-
-// Middleware ----------------------------------------------------------
-// Development. Allows to run Frontend on different port
-server.use(cors());
-
-server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({extended: false}));
-
-// Set static folder. Public ng build output
-server.use(express.static(path.join(__dirname, 'public')));
-
-server.use('/users', users);
+const port = 3002;
 
 // I'd like to move it to its own database module
 mongoose.connect(config.database);
@@ -36,8 +24,19 @@ mongoose.connection.on('error', (err) => {
   console.log('Database error ' + err);
 });
 
-// APIs ----------------------------------------------------------------
-server.listen(port, () => console.log('Server listen on port ' + port));
+// Middleware ----------------------------------------------------------
+// Development. Allows to run Frontend on different port
+server.use(cors());
 
+// Set static folder. Public ng build output
+server.use(express.static(path.join(__dirname, 'public')));
+
+server.use(bodyParser.json());
+
+server.use('/users', users);
+
+// APIs ----------------------------------------------------------------
 // TODO Delete this line, it is not needed
-//server.get('/', (req, res) => res.send('Root page'));
+server.get('/', (req, res) => res.send('Root page'));
+
+server.listen(port, () => console.log('Server listen on port ' + port));
