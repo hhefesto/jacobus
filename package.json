@@ -1,11 +1,12 @@
 {
   "name": "decision",
   "version": "0.0.1",
+  "private": true,
   "description": "Decision server side application",
-  "main": "main.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node main"
+    "start": "node server"
   },
   "dependencies": {
     "express": "4.15.x",
