@@ -13,7 +13,7 @@ const config = require('./config/database');
 
 // Definitions----------------------------------------------------------
 const server = express();
-const port = 3002;
+const port = 3001;
 
 // I'd like to move it to its own database module
 mongoose.connect(config.database);
@@ -32,6 +32,10 @@ server.use(cors());
 server.use(express.static(path.join(__dirname, 'public')));
 
 server.use(bodyParser.json());
+
+server.use(passport.initialize());
+server.use(passport.session());
+require('./config/passport')(passport);
 
 server.use('/users', users);
 
