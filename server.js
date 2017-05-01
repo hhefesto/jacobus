@@ -43,4 +43,9 @@ server.use('/users', users);
 // TODO Delete this line, it is not needed
 server.get('/', (req, res) => res.send('Root page'));
 
+server.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index.html'));
+  console.log("Ruta invalida")
+});
+
 server.listen(port, () => console.log('Server listen on port ' + port));

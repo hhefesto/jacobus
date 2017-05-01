@@ -56,15 +56,16 @@ router.post('/authenticate', (req, res, next) => {
         });
       }      
       
-      else 
+      else
         res.json({success: false, msg: 'Wrong password'});
     });
   });
 });
 
-router.get('/profile', (req, res, next) => {
-  console.log('Enviando Profile');
-  res.send('Profile page');
-});
+router.get('/profile', passport.authenticate(
+  'jwt',
+  {session:false}),
+  (req, res, next) => res.json({user: req.user})
+);
 
 module.exports = router;
