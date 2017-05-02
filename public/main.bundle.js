@@ -260,7 +260,7 @@ exports = module.exports = __webpack_require__(10)(false);
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".videoWrapper {\n\tposition: relative;\n\tpadding-bottom: 56.25%; /* 16:9 */\n\tpadding-top: 25px;\n\theight: 0;\n}\n.videoWrapper iframe {\n\tposition: absolute;\n\ttop: 0;\n\tleft: 0;\n\twidth: 100%;\n\theight: 100%;\n}\n\nlabel {\n  padding-right:5px;\n}\n\n.btn {\n  width: 200px;\n}", ""]);
 
 // exports
 
@@ -359,7 +359,7 @@ module.exports = "<h2 class=\"page-header\">Dashboard</h2>\n<p>Welcome to your d
 /***/ 177:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"jumbotron text-center\">\n  <h1>MEAN Authentication App</h1>\n  <p class=\"lead\">Welcome to our custom MEAN authentication application built from scratch</p>\n  <div>\n    <a class=\"btn btn-primary\" [routerLink]=\"['/register']\">Register</a> <a class=\"btn btn-default\" [routerLink]=\"['/login']\">Login</a>\n  </div>\n</div>\n\n<div class=\"row\">\n  <div class=\"col-md-4\">\n    <h3>Express Backend</h3>\n    <p>A rock solid Node.js/Express server using Mongoose to organize models and query the database</p>\n  </div>\n  <div class=\"col-md-4\">\n    <h3>Angular-CLI</h3>\n    <p>Angular-CLI to generate components, services and more. Local dev server and easy compilation</p>\n  </div>\n  <div class=\"col-md-4\">\n    <h3>JWT Tokens</h3>\n    <p>Full featured authentication using JSON web tokens. Login and store user data</p>\n  </div>\n</div>\n"
+module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\" col-md-6\">\n      <div class=\"videoWrapper\">\n        <iframe width=\"560\" height=\"315\" frameborder=\"0\"   \n          src=\"https://www.youtube.com/embed/G1xrL59RsBM?&loop=1&playlist=G1xrL59RsBM&autoplay=1&rel=0&amp;controls=0&amp;showinfo=0\">\n        </iframe>\n        <!--<iframe width=\"560\" height=\"315\" frameborder=\"0\"   \n          src=\"https://www.youtube.com/embed/B7bqAsxee4I?&loop=1&playlist=B7bqAsxee4I&autoplay=1&rel=0&amp;controls=0&amp;showinfo=0\">\n        </iframe>-->\n      </div>\n    </div>\n    <div class=\"text-center col-md-6\">\n      <h1>Decisión</h1>\n      <p class=\"lead\">\n        Bienvenido, ahora podras tomar mejores decisiones y de manera más fácil basado en tus prioridades.\n      </p>\n        <label>¿No te has registrado?</label>\n        <a class=\"btn btn-primary\" [routerLink]=\"['/register']\">Regístrate</a>\n        <br><br>\n        <label>¿Ya tienes una cuenta?</label>\n        <a class=\"btn btn-success\" [routerLink]=\"['/login']\">Ingresa</a>\n    </div>\n  </div>  \n</div>\n<hr>\n<div class=\"row\">\n  <div class=\"col-md-4\">\n    <h3>Proceso de toma de decisiones</h3>\n    <p align=\"justify\">Según Robbins & Coulter (2005), el proceso de toma de decisiones, incluye una serie de ocho etapas que comienza por identificar el problema y los criterios de decisión y por ponderarlos; enseguida se pasa a trazar, analizar y elegir una alternativa para resolver el problema.</p>\n  </div>\n  <div class=\"col-md-4\">\n    <h3>Proceso analítico jerárquico</h3>\n    <p align=\"justify\">es una técnica estructurada para tratar con decisiones complejas basada en matemáticas y psicología. Provee un marco de referencia racional y comprensivo para estructurar un problema de decisión, es usado alrededor del mundo en una amplia variedad de situaciones de decisión</p>\n  </div>\n  <div class=\"col-md-4\">\n    <h3>Fácil de usar</h3>\n    <p align=\"justify\">Ayuda a los tomadores de decisiones a encontrar la solución que mejor se ajusta a sus necesidades y a su compresión del problema.</p>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -408,14 +408,12 @@ var AuthenticationService = (function () {
     AuthenticationService.prototype.registerUser = function (user) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append('Content-Type', 'application/json');
-        // DEV Frontend running on angular server
         return this.http.post('users/register', user, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthenticationService.prototype.authenticateUser = function (user) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append('Content-Type', 'application/json');
-        // DEV Frontend running on angular server
         return this.http.post('users/authenticate', user, { headers: headers })
             .map(function (res) { return res.json(); });
     };
@@ -424,7 +422,6 @@ var AuthenticationService = (function () {
         this.loadToken();
         headers.append('Authorization', this.authToken);
         headers.append('Content-Type', 'application/json');
-        // DEV Frontend running on angular server
         return this.http.get('users/profile', { headers: headers })
             .map(function (res) { return res.json(); });
     };
@@ -467,7 +464,7 @@ module.exports = "<h2 class=\"page-header\">Register</h2>\n<form (submit)=\"onRe
 /***/ 181:
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-default\">\n  <div class=\"container\">\n    <div class=\"navbar-header\">\n      <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n        <span class=\"sr-only\">Toggle navigation</span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n      </button>\n      <a class=\"navbar-brand\" href=\"#\">Decision</a>\n    </div>\n    <div id=\"navbar\" class=\"collapse navbar-collapse\">\n      <ul class=\"nav navbar-nav navbar-left\">\n        <li [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/']\">Home</a></li>\n      </ul>\n      <ul class=\"nav navbar-nav navbar-right\">\n        <li *ngIf=\"authenticationService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/dashboard']\">Dashboard</a></li>\n        <li *ngIf=\"authenticationService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/profile']\">Profile</a></li>\n\n        <li *ngIf=\"!authenticationService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/login']\">Login</a></li>\n        <li *ngIf=\"!authenticationService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/register']\">Register</a></li>\n        <li *ngIf=\"authenticationService.loggedIn()\"><a (click)=\"onLogoutClick()\" href=\"#\">Logout</a></li>\n      </ul>\n    </div><!--/.nav-collapse -->\n  </div>\n</nav>"
+module.exports = "<nav class=\"navbar navbar-default\">\n  <div class=\"container\">\n    <div class=\"navbar-header\">\n      <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n        <span class=\"sr-only\">Toggle navigation</span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n      </button>\n      <a class=\"navbar-brand\" href=\"#\">Decisión</a>\n    </div>\n    <div id=\"navbar\" class=\"collapse navbar-collapse\">\n      <ul class=\"nav navbar-nav navbar-left\">\n        <li [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/']\">Inicio</a></li>\n      </ul>\n      <ul class=\"nav navbar-nav navbar-right\">\n        <li *ngIf=\"authenticationService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/dashboard']\">Dashboard</a></li>\n        <li *ngIf=\"authenticationService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/profile']\">Profile</a></li>\n\n        <li *ngIf=\"!authenticationService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/login']\">Ingresar</a></li>\n        <li *ngIf=\"!authenticationService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/register']\">Registro</a></li>\n        <li *ngIf=\"authenticationService.loggedIn()\"><a (click)=\"onLogoutClick()\" href=\"#\">Logout</a></li>\n      </ul>\n    </div><!--/.nav-collapse -->\n  </div>\n</nav>"
 
 /***/ }),
 

@@ -16,7 +16,7 @@
     "express": "4.15.x",
     "mongoose": "4.9.x",
     "bcryptjs": "2.x.x",
-    "cors": "2.8.x",
+    //"cors": "2.8.x",
     "jsonwebtoken": "7.4.x",
     "body-parser": "1.17.x",
     "passport": "0.3.x",

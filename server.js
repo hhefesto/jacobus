@@ -3,7 +3,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const cors = require('cors');   // DEV
+//const cors = require('cors');   // DEV
 const passport = require('passport');
 const mongoose = require('mongoose');
 
@@ -46,7 +46,6 @@ server.use('/users', users);
 
 server.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'));
-  console.log("Ruta invalida")
 });
 
 server.listen(port, () => console.log('Server listen on port ' + port));
