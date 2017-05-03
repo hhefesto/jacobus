@@ -21,6 +21,9 @@
     "passport": "0.3.x",
     "passport-jwt": "2.2.x"
   },
+  "devDependencies": {
+    "cors": "2.8.x"
+  },
   "author": "Abraham Sotelo Aguilar",
   "license": "ISC"
 }

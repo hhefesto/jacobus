@@ -3,7 +3,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-//const cors = require('cors');   // DEV
 const passport = require('passport');
 const mongoose = require('mongoose');
 
@@ -13,8 +12,7 @@ const config = require('./config/database');
 
 // Definitions----------------------------------------------------------
 const server = express();
-//const port = 3001;
-const port = process.env.PORT || 8080;
+let port = process.env.PORT || 8080;
 
 // I'd like to move it to its own database module
 mongoose.connect(config.database);
@@ -25,10 +23,13 @@ mongoose.connection.on('error', (err) => {
   console.log('Database error ' + err);
 });
 
-// Middleware ----------------------------------------------------------
-// DEV Allows to run Frontend on different port
-//server.use(cors());
+// $$$$$$$$$$$$ DEP Developmen section, comment on Deploy $$$$$$$$$$$$$$
+const cors = require('cors');
+server.use(cors());
+port = 3001;
+// $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
+// Middleware ----------------------------------------------------------
 // Set static folder. public is the "ng build" command output
 server.use(express.static(path.join(__dirname, 'public')));
 
@@ -43,7 +44,6 @@ server.use('/users', users);
 // APIs ----------------------------------------------------------------
 // TODO Delete this line, it is not needed
 //server.get('/', (req, res) => res.send('Root page'));
-
 server.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });
