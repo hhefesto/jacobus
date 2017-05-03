@@ -23,6 +23,7 @@ mongoose.connection.on('error', (err) => {
   console.log('Database error ' + err);
 });
 
+// $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 // $$$$$$$$$$$$ DEP Developmen section, comment on Deploy $$$$$$$$$$$$$$
 const cors = require('cors');
 server.use(cors());
@@ -41,11 +42,10 @@ require('./config/passport')(passport);
 
 server.use('/users', users);
 
-// APIs ----------------------------------------------------------------
-// TODO Delete this line, it is not needed
-//server.get('/', (req, res) => res.send('Root page'));
+// Default route -------------------------------------------------------
 server.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
+// Start server --------------------------------------------------------
 server.listen(port, () => console.log('Server listen on port ' + port));

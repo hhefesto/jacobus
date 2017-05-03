@@ -5,7 +5,7 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 
 // My own Modules ------------------------------------------------------
-const User = require('../models/user');
+const User = require('../database/user/user.model');
 const config = require('../config/database');
 
 // Definitions ---------------------------------------------------------
