@@ -5,7 +5,8 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 
 // My own Modules ------------------------------------------------------
-const User = require('../database/user/user.model');
+const User = require('../database/users/user.model');
+const Project = require('../database/projects/project.model');
 const config = require('../config/database');
 
 // Definitions ---------------------------------------------------------
@@ -15,10 +16,10 @@ const router = express.Router();
 router.post('/register', (req, res, next) => {
   User.addUser(req.body, (err, user) => {
     if(err) {
-      res.json({success: false, msg: 'Failed to register user'});
+      res.json({success: false, msg: 'Falla al registrar usuario'});
     }
     else {
-      res.json({success: true, msg: 'User registered'});
+      res.json({success: true, msg: 'Usuario registrado correctamente'});
     } 
   });
 });
@@ -32,7 +33,7 @@ router.post('/authenticate', (req, res, next) => {
       throw err;
 
     if(!user){
-      return res.json({success: false, msg: 'User not found'});
+      return res.json({success: false, msg: 'Usuario no encontrado'});
     }
 
     User.comparePassword(password, user.password, (err, isMatch) => {
@@ -44,20 +45,26 @@ router.post('/authenticate', (req, res, next) => {
           expiresIn: 86400 // 1 day
         });
 
-        res.json({
-          success: true,
-          token: 'JWT '+token,
-          user: {
-            id: user._id,
-            name: user.name,
-            username: user.username,
-            email: user.email
-          }
+        const project = Project.getProjects(user._id, (err, projects) => {
+          if(err)
+            throw err;
+
+          res.json({
+            success: true,
+            token: 'JWT '+token,
+            user: {
+              id: user._id,
+              name: user.name,
+              username: user.username,
+              email: user.email
+            },
+            projects: projects
+          });
         });
       }      
       
       else
-        res.json({success: false, msg: 'Wrong password'});
+        res.json({success: false, msg: 'Password incorrecto'});
     });
   });
 });

@@ -7,7 +7,8 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 
 // My own Modules ------------------------------------------------------
-const users = require('./routes/users');
+const usersRoute = require('./routes/users.route');
+const projectsRoute = require('./routes/projects.route')
 const config = require('./config/database');
 
 // Definitions----------------------------------------------------------
@@ -40,7 +41,8 @@ server.use(passport.initialize());
 server.use(passport.session());
 require('./config/passport')(passport);
 
-server.use('/users', users);
+server.use('/users', usersRoute);
+server.use('/projects', projectsRoute);
 
 // Default route -------------------------------------------------------
 server.get('*', (req, res) => {
