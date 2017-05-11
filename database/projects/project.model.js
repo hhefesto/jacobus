@@ -18,4 +18,8 @@ Project.addProject = (body, callback) => {
   Project.create(body, callback);
 };
 
+Project.delete = (projectId, callback) => {
+  Project.remove(projectId, callback);
+}
+
 module.exports = Project;

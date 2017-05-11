@@ -20,4 +20,21 @@ router.post('/create', (req, res, next) => {
   });
 });
 
+router.post('/delete', (req, res, next) => {
+  Project.delete(req.body.projectId, err => {
+    if(err) {
+      res.json({success: false, msg: 'Falla al eliminar proyecto'});
+    }
+    else {
+      Project.getProjects(req.body.masterId, (err, projects) => {
+        res.json({
+          success: true,
+          msg: 'Proyecto eliminado correctamente',
+          projects: projects
+        });
+      });
+    }  
+  });
+});
+
 module.exports = router;

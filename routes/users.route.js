@@ -45,7 +45,7 @@ router.post('/authenticate', (req, res, next) => {
           expiresIn: 86400 // 1 day
         });
 
-        const project = Project.getProjects(user._id, (err, projects) => {
+        Project.getProjects(user._id, (err, projects) => {
           if(err)
             throw err;
 
