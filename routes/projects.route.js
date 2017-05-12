@@ -15,8 +15,14 @@ router.post('/create', (req, res, next) => {
       res.json({success: false, msg: 'Falla al crear proyecto'});
     }
     else {
-      res.json({success: true, msg: 'Proyecto creado correctamente'});
-    }
+      Project.getProjects(req.body.masterId, (err, projects) => {
+        res.json({
+          success: true,
+          msg: 'Proyecto creado correctamente',
+          projects: projects
+        });
+      });
+    } 
   });
 });
 
