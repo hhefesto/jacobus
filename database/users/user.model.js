@@ -10,8 +10,8 @@ const User = mongoose.model('User', userSchema);
 
 User.getUserById = (id, callback) => User.findById(id, callback);
 
-User.getUserByUsername = (username, callback) => {
-  const query = {username: username};
+User.getUserByEmail = (email, callback) => {
+  const query = {email: email};
   User.findOne(query, callback);
 };
 

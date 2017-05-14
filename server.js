@@ -25,7 +25,7 @@ mongoose.connection.on('error', (err) => {
 });
 
 // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-// $$$$$$$$$$$$ DEP Developmen section, comment on Deploy $$$$$$$$$$$$$$
+// $$$$$$$$$ DEP Developmen section, comment on Deployment $$$$$$$$$$$$$
 const cors = require('cors');
 server.use(cors());
 port = 3001;
