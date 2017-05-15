@@ -18,5 +18,4 @@ const userSchema = mongoose.Schema({
 });
 
 userSchema.set('versionKey', false);
-
 module.exports = userSchema;

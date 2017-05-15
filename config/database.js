@@ -1,3 +1,4 @@
+'use strict';
 module.exports = {
   // DEP Development
   database : 'mongodb://localhost:27017/test',

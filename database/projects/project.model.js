@@ -2,7 +2,7 @@
 // External Modules -----------------------------------------------------
 const mongoose = require('mongoose');
 
-// My own Modules -------------------------------------------------------
+// My Modules -------------------------------------------------------
 const projectSchema = require('./project.schema');
 
 const Project = mongoose.model('Project', projectSchema);
@@ -20,6 +20,6 @@ Project.addProject = (body, callback) => {
 
 Project.delete = (projectId, callback) => {
   Project.remove(projectId, callback);
-}
+};
 
 module.exports = Project;

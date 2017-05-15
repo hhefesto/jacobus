@@ -19,7 +19,8 @@
     "jsonwebtoken": "7.4.x",
     "body-parser": "1.17.x",
     "passport": "0.3.x",
-    "passport-jwt": "2.2.x"
+    "passport-jwt": "2.2.x",
+    "nodemailer": "4.0.x"
   },
   "devDependencies": {
     "cors": "2.8.x"
