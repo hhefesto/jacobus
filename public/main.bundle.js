@@ -285,13 +285,13 @@ var AuthenticationService = (function () {
     AuthenticationService.prototype.registerUser = function (user) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append('Content-Type', 'application/json');
-        return this.http.post('http://localhost:3001/users/register', user, { headers: headers })
+        return this.http.post('users/register', user, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthenticationService.prototype.authenticateUser = function (user) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append('Content-Type', 'application/json');
-        return this.http.post('http://localhost:3001/users/authenticate', user, { headers: headers })
+        return this.http.post('users/authenticate', user, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthenticationService.prototype.getProfile = function () {
@@ -299,7 +299,7 @@ var AuthenticationService = (function () {
         this.loadToken();
         headers.append('Authorization', this.authToken);
         headers.append('Content-Type', 'application/json');
-        return this.http.get('http://localhost:3001/users/profile', { headers: headers })
+        return this.http.get('users/profile', { headers: headers })
             .map(function (res) { return res.json(); });
     };
     AuthenticationService.prototype.storeUserData = function (data) {
@@ -915,7 +915,7 @@ var ProjectHandlingService = (function () {
             masterId: JSON.parse(localStorage.getItem('user')).id,
             name: projectName
         };
-        return this.http.post('http://localhost:3001/projects/create', newProject, { headers: headers })
+        return this.http.post('projects/create', newProject, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     ProjectHandlingService.prototype.deleteProject = function (projectId) {
@@ -925,7 +925,7 @@ var ProjectHandlingService = (function () {
             projectId: projectId,
             masterId: JSON.parse(localStorage.getItem('user')).id,
         };
-        return this.http.post('http://localhost:3001/projects/delete', project, { headers: headers })
+        return this.http.post('projects/delete', project, { headers: headers })
             .map(function (res) { return res.json(); });
     };
     return ProjectHandlingService;
