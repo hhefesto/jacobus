@@ -145,7 +145,7 @@ var TopMenuComponent = (function () {
     };
     TopMenuComponent.prototype.onLogoutClick = function () {
         this.authenticationService.logout();
-        this.flashMessagesService.show('You are now logged out', { cssClass: 'alert-success', timeout: 3000 });
+        this.flashMessagesService.show('Has salido', { cssClass: 'alert-success', timeout: 3000 });
         this.router.navigate(['/login']);
         return false;
     };
@@ -260,7 +260,7 @@ exports = module.exports = __webpack_require__(10)(false);
 
 
 // module
-exports.push([module.i, ".videoWrapper {\n\tposition: relative;\n\tpadding-bottom: 56.25%; /* 16:9 */\n\tpadding-top: 25px;\n\theight: 0;\n}\n.videoWrapper iframe {\n\tposition: absolute;\n\ttop: 0;\n\tleft: 0;\n\twidth: 100%;\n\theight: 100%;\n}\n\nlabel {\n  padding-right:5px;\n}\n\n.btn {\n  width: 200px;\n}", ""]);
+exports.push([module.i, ".videoWrapper {\n\tposition: relative;\n\tpadding-bottom: 56.25%; /* 16:9 */\n\tpadding-top: 25px;\n\theight: 0;\n}\n.videoWrapper iframe {\n\tposition: absolute;\n\ttop: 0;\n\tleft: 0;\n\twidth: 100%;\n\theight: 100%;\n}\n\nlabel {\n  padding-right:10px;\n}\n\n.btn {\n  width: 180px;\n}", ""]);
 
 // exports
 
@@ -352,7 +352,7 @@ module.exports = "<app-top-menu></app-top-menu>\n<div class=\"container\">\n  <f
 /***/ 176:
 /***/ (function(module, exports) {
 
-module.exports = "<h2 class=\"page-header\">Dashboard</h2>\n<p>Welcome to your dashboard</p>"
+module.exports = "<h2 class=\"page-header\">Proyectos</h2>\n<p>Tabla con proyectos</p>"
 
 /***/ }),
 
@@ -366,14 +366,14 @@ module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div cla
 /***/ 178:
 /***/ (function(module, exports) {
 
-module.exports = "<h2 class=\"page-header\">Login</h2>\n<form (submit)=\"onLoginSubmit()\">\n  <div class=\"form-group\">\n    <label>Username</label>\n    <input type=\"text\" class=\"form-control\" [(ngModel)]=\"username\" name=\"username\">\n  </div>\n  <div class=\"form-group\">\n    <label>Password</label>\n    <input type=\"password\" class=\"form-control\" [(ngModel)]=\"password\" name=\"password\">\n  </div>\n  <input type=\"submit\" class=\"btn btn-primary\" value=\"Login\">\n</form>\n"
+module.exports = "<h2 class=\"page-header\">Ingresar</h2>\n<form (submit)=\"onLoginSubmit()\">\n  <div class=\"form-group\">\n    <label>Usuario</label>\n    <input type=\"text\" class=\"form-control\" [(ngModel)]=\"username\" name=\"username\">\n  </div>\n  <div class=\"form-group\">\n    <label>Password</label>\n    <input type=\"password\" class=\"form-control\" [(ngModel)]=\"password\" name=\"password\">\n  </div>\n  <input type=\"submit\" class=\"btn btn-primary\" value=\"Ingresar\">\n</form>\n"
 
 /***/ }),
 
 /***/ 179:
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"user\">\n  <h2 class=\"page-header\">{{user.name}}</h2>\n  <ul class=\"list-group\">\n    <li class=\"list-group-item\">Username: {{user.username}}</li>\n    <li class=\"list-group-item\">Email: {{user.email}}</li>\n  </ul>\n</div>"
+module.exports = "<div *ngIf=\"user\">\n  <h2 class=\"page-header\">{{user.name}}</h2>\n  <ul class=\"list-group\">\n    <li class=\"list-group-item\">Usuario: {{user.username}}</li>\n    <li class=\"list-group-item\">Email: {{user.email}}</li>\n  </ul>\n</div>"
 
 /***/ }),
 
@@ -457,14 +457,14 @@ var _a;
 /***/ 180:
 /***/ (function(module, exports) {
 
-module.exports = "<h2 class=\"page-header\">Register</h2>\n<form (submit)=\"onRegisterSubmit()\">\n  <div class=\"form-group\">\n    <label>Name</label>\n    <input type=\"text\" [(ngModel)]=\"name\" name=\"name\" class=\"form-control\">\n  </div>\n  <div class=\"form-group\">\n    <label>Username</label>\n    <input type=\"text\" [(ngModel)]=\"username\" name=\"username\" class=\"form-control\">\n  </div>\n  <div class=\"form-group\">\n    <label>Email</label>\n    <input type=\"text\" [(ngModel)]=\"email\" name=\"email\" class=\"form-control\" >\n  </div>\n  <div class=\"form-group\">\n    <label>Password</label>\n    <input type=\"password\" [(ngModel)]=\"password\" name=\"password\" class=\"form-control\">\n  </div>\n  <input type=\"submit\" class=\"btn btn-primary\" value=\"Submit\">\n</form>\n"
+module.exports = "<h2 class=\"page-header\">Registro</h2>\n<form (submit)=\"onRegisterSubmit()\">\n  <div class=\"form-group\">\n    <label>Nombre</label>\n    <input type=\"text\" [(ngModel)]=\"name\" name=\"name\" class=\"form-control\">\n  </div>\n  <div class=\"form-group\">\n    <label>Usuario</label>\n    <input type=\"text\" [(ngModel)]=\"username\" name=\"username\" class=\"form-control\">\n  </div>\n  <div class=\"form-group\">\n    <label>Email</label>\n    <input type=\"text\" [(ngModel)]=\"email\" name=\"email\" class=\"form-control\" >\n  </div>\n  <div class=\"form-group\">\n    <label>Password</label>\n    <input type=\"password\" [(ngModel)]=\"password\" name=\"password\" class=\"form-control\">\n  </div>\n  <input type=\"submit\" class=\"btn btn-primary\" value=\"Enviar\">\n</form>\n"
 
 /***/ }),
 
 /***/ 181:
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-default\">\n  <div class=\"container\">\n    <div class=\"navbar-header\">\n      <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n        <span class=\"sr-only\">Toggle navigation</span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n      </button>\n      <a class=\"navbar-brand\" href=\"#\">Decisión</a>\n    </div>\n    <div id=\"navbar\" class=\"collapse navbar-collapse\">\n      <ul class=\"nav navbar-nav navbar-left\">\n        <li [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/']\">Inicio</a></li>\n      </ul>\n      <ul class=\"nav navbar-nav navbar-right\">\n        <li *ngIf=\"authenticationService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/dashboard']\">Dashboard</a></li>\n        <li *ngIf=\"authenticationService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/profile']\">Profile</a></li>\n\n        <li *ngIf=\"!authenticationService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/login']\">Ingresar</a></li>\n        <li *ngIf=\"!authenticationService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/register']\">Registro</a></li>\n        <li *ngIf=\"authenticationService.loggedIn()\"><a (click)=\"onLogoutClick()\" href=\"#\">Logout</a></li>\n      </ul>\n    </div><!--/.nav-collapse -->\n  </div>\n</nav>"
+module.exports = "<nav class=\"navbar navbar-default\">\n  <div class=\"container\">\n    <div class=\"navbar-header\">\n      <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n        <span class=\"sr-only\">Toggle navigation</span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n      </button>\n      <a class=\"navbar-brand\" href=\"#\">Decisión</a>\n    </div>\n    <div id=\"navbar\" class=\"collapse navbar-collapse\">\n      <ul class=\"nav navbar-nav navbar-left\">\n        <li [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/']\">Inicio</a></li>\n      </ul>\n      <ul class=\"nav navbar-nav navbar-right\">\n        <li *ngIf=\"authenticationService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/dashboard']\">Proyectos</a></li>\n        <li *ngIf=\"authenticationService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/profile']\">Perfíl</a></li>\n\n        <li *ngIf=\"!authenticationService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/login']\">Ingresar</a></li>\n        <li *ngIf=\"!authenticationService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/register']\">Registro</a></li>\n        <li *ngIf=\"authenticationService.loggedIn()\"><a (click)=\"onLogoutClick()\" href=\"#\">Salir</a></li>\n      </ul>\n    </div><!--/.nav-collapse -->\n  </div>\n</nav>"
 
 /***/ }),
 
@@ -588,7 +588,7 @@ var LoginComponent = (function () {
         this.authenticationService.authenticateUser(user).subscribe(function (data) {
             if (data.success) {
                 _this.authenticationService.storeUserData(data.token, data.user);
-                _this.flashMessagesService.show('You are now logged in', { cssClass: 'alert-success', timeout: 3000 });
+                _this.flashMessagesService.show('Has ingresado', { cssClass: 'alert-success', timeout: 3000 });
                 _this.router.navigate(['/dashboard']);
             }
             else {
@@ -705,22 +705,22 @@ var RegisterComponent = (function () {
         };
         // Required fields
         if (!this.validateService.validateRegister(user)) {
-            this.flashMessagesService.show('Please fill all fields', { cssClass: 'alert-danger', timeout: 3000 });
+            this.flashMessagesService.show('Por favor llena todos los campos', { cssClass: 'alert-danger', timeout: 3000 });
             return false;
         }
         // Valid email
         if (!this.validateService.validateEmail(user.email)) {
-            this.flashMessagesService.show('Please provide a valid email', { cssClass: 'alert-danger', timeout: 3000 });
+            this.flashMessagesService.show('Proporciona una dirección valida de email', { cssClass: 'alert-danger', timeout: 3000 });
             return false;
         }
         // Register user
         this.authenticationService.registerUser(user).subscribe(function (data) {
             if (data.success) {
-                _this.flashMessagesService.show('You are now registered and can log in', { cssClass: 'alert-success', timeout: 3000 });
+                _this.flashMessagesService.show('Te has registrado correctamente, ahora puedes ingresar', { cssClass: 'alert-success', timeout: 3000 });
                 _this.router.navigate(['/login']);
             }
             else {
-                _this.flashMessagesService.show('Something went wrong', { cssClass: 'alert-danger', timeout: 3000 });
+                _this.flashMessagesService.show('Algo salio mal', { cssClass: 'alert-danger', timeout: 3000 });
                 _this.router.navigate(['/register']);
             }
         });
