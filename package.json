@@ -2,8 +2,8 @@
   "name": "decision",
   "version": "0.0.1",
   "engines": {
-    "node": "7.9.0",
-    "npm": "4.5.0"
+    "node": "7.10.0",
+    "npm": "4.6.1"
   },
   "private": true,
   "description": "Decision server side application",
