@@ -26,6 +26,22 @@ router.post('/create', (req, res, next) => {
   });
 });
 
+router.post('/load', (req, res, next) => {
+  console.log(req.body);
+  Project.getProjectById(req.body.id, (err, project) => {
+    if(err) {
+      res.json({success: false, msg: 'Falla al cargar proyecto'});
+    }
+    else {
+      res.json({
+        success: true,
+        msg: 'Proyecto cargado correctamente',
+        project: project
+      });
+    }
+  });
+});
+
 router.post('/delete', (req, res, next) => {
   Project.delete(req.body.projectId, err => {
     if(err) {

@@ -14,6 +14,8 @@ Project.getProjects = (masterId, callback) => {
   });
 };
 
+Project.getProjectById = (id, callback) => Project.findById(id, callback);
+
 Project.addProject = (body, callback) => {
   Project.create(body, callback);
 };
