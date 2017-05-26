@@ -27,7 +27,6 @@ router.post('/create', (req, res, next) => {
 });
 
 router.post('/load', (req, res, next) => {
-  console.log(req.body);
   Project.getProjectById(req.body.id, (err, project) => {
     if(err) {
       res.json({success: false, msg: 'Falla al cargar proyecto'});
@@ -40,6 +39,17 @@ router.post('/load', (req, res, next) => {
       });
     }
   });
+});
+
+router.post('/save', (req, res, next) => {
+  Project.saveProject(req.body._id, req.body, (err) => {
+    if(err) {
+      res.json({success: false, msg: 'Falla al guardar el proyecto'});
+    }
+    else {
+      res.json({success: true, msg: 'Proyecto guardado correctamente'});
+    }
+  })
 });
 
 router.post('/delete', (req, res, next) => {

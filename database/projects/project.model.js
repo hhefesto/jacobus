@@ -20,6 +20,8 @@ Project.addProject = (body, callback) => {
   Project.create(body, callback);
 };
 
+Project.saveProject = (id, project, callback) => Project.update({_id:id}, project, callback);
+
 Project.delete = (projectId, callback) => {
   Project.remove(projectId, callback);
 };
