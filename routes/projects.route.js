@@ -16,10 +16,13 @@ router.post('/create', (req, res, next) => {
     }
     else {
       Project.getProjects(req.body.masterId, (err, projects) => {
-        res.json({
-          success: true,
-          msg: 'Proyecto creado correctamente',
-          projects: projects
+        Project.getProjectById(projects[0].id, (err, project) => {
+          res.json({
+            success: true,
+            msg: 'Proyecto creado correctamente',
+            projects: projects,
+            project: project
+          });
         });
       });
     } 
