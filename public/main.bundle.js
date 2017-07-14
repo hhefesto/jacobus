@@ -492,7 +492,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/principal/principal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-side-menu [project]=\"project\"\n               [criteriaPairwise]=\"criteriaPairwise\"\n               [alternativesPairwise]=\"alternativesPairwise\"\n               (notifyNodeChanges)=\"onNodeChanges($event)\"\n               (notifyCalculateDecision)=\"onCalculateDecision($event)\"\n               (notifySaveProject)=\"onSaveProject($event)\"></app-side-menu>\n\n<div id=\"workspace\">\n  <div class=\"page-header text-center\">\n    <h1>Objetivo: {{project.name}}</h1>           \n  </div>\n  <hr>\n\n  <div class=\"page-header text-center\">\n    <h1>Criterios</h1>      \n  </div>\n\n  <div *ngFor=\"let criterion of project.criteria\">\n    <hr id=\"Criterion={{criterion.name}}\">\n    <div class=\"form-group\">\n      <label>Nombre:</label>\n      <input type=\"text\" class=\"form-control\" placeholder=\"Nombre del Criterio\" [(ngModel)]=\"criterion.name\">\n    </div>\n    <br>\n    <div class=\"form-group\">\n      <label>Descripción</label>\n      <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"criterion.description\"></textarea>\n    </div>        \n    <hr>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Alternativas</h1>           \n  </div>\n  <div *ngFor=\"let alternative of project.alternatives\">\n    <hr id=\"Alternative={{alternative.name}}\">\n    <div class=\"form-group\">\n      <label>Nombre:</label>\n      <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la Alternativa\" [(ngModel)]=\"alternative.name\">\n    </div>\n    <br>\n    <div class=\"form-group\">\n      <label>Descripción</label>\n      <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"alternative.description\"></textarea>\n    </div>\n    <hr>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Prioridades</h1>      \n  </div>\n\n  <div *ngFor=\"let criterionPairwise of criteriaPairwise; let i = index\">\n    <hr id=\"Priority={{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}\">\n    <h3 style=\"text-align:center;\">{{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}</h3>\n    <app-slider [(comparison)]=\"project.criteriaComparisons[i]\" ></app-slider>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Evaluación</h1>      \n  </div>\n\n  <div *ngFor=\"let criterion of project.criteria; let i = index\">\n    <hr id=\"CriteriaContext={{criterion.name}}\">\n    <h2>Evaluación en el contexto de: {{criterion.name}}</h2>\n    <div *ngFor=\"let alternativePairwise of alternativesPairwise; let j = index\">\n      <h3 style=\"text-align:center;\">{{project.alternatives[alternativePairwise.indexItem1].name}} vs {{project.alternatives[alternativePairwise.indexItem2].name}}</h3>\n      <app-slider [(comparison)]=\"project.alternativesComparisons[i][j]\"></app-slider>\n    </div>\n  </div>\n\n  \n  <div class=\"page-header text-center\" id=\"Results\">\n    <h1>Resultados</h1>      \n  </div>\n\n  <h3 style=\"text-align:center;\" id=\"nodesChart\">Gráfica de relaciones entre los nodos</h3>\n  <div id=\"nodesChartDisplay\" style=\"height: 400px;\"></div>\n  <br><br>\n  \n  <h3 style=\"text-align:center;\" id=\"criteriaChart\">Gráfica de criterios</h3>\n  <div id=\"criteriaChartDisplay\"></div>\n\n  <h3 style=\"text-align:center;\" id=\"table\">Matriz de resultados</h3>\n  <table *ngIf=\"goalMatrixReady\" class=\"table table-hover table-condensed table-bordered\">\n    <thead>\n      <tr>\n        <th>Alternativas</th>\n        <th *ngFor=\"let criterion of project.criteria\">{{criterion.name}}</th>\n        <th>Objetivo</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let alternative of project.alternatives; let i = index\">\n        <td>{{alternative.name}}</td>\n        <td *ngFor=\"let criterion of project.criteria; let j = index\">\n          {{(goalMatrix[i][j]*100).toFixed(1)}} %\n        </td>\n        <td>{{(goalMatrix[i][goalMatrix[i].length-1]*100).toFixed(1)}} %</td>\n      </tr>\n    </tbody>\n  </table>\n  <br><br>\n\n  <h3 style=\"text-align:center;\" id=\"chart\">Gráfica de resultados</h3>\n  <div id=\"chartDisplay\"></div>\n\n</div>\n\n"
+module.exports = "<app-side-menu [project]=\"project\"\n               [criteriaPairwise]=\"criteriaPairwise\"\n               [alternativesPairwise]=\"alternativesPairwise\"\n               (notifyNodeChanges)=\"onNodeChanges($event)\"\n               (notifyCalculateDecision)=\"onCalculateDecision($event)\"\n               (notifySaveProject)=\"onSaveProject($event)\"></app-side-menu>\n\n<div id=\"workspace\">\n  <div class=\"page-header text-center\">\n    <h1>Objetivo: {{project.name}}</h1>           \n  </div>\n  <hr>\n\n  <div class=\"page-header text-center\">\n    <h1>Criterios</h1>      \n  </div>\n\n  <div *ngFor=\"let criterion of project.criteria\">\n    <hr id=\"Criterion={{criterion.name}}\">\n    <div class=\"form-group\">\n      <label>Nombre:</label>\n      <input type=\"text\" class=\"form-control\" placeholder=\"Nombre del Criterio\" [(ngModel)]=\"criterion.name\">\n    </div>\n    <br>\n    <div class=\"form-group\">\n      <label>Descripción</label>\n      <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"criterion.description\"></textarea>\n    </div>        \n    <hr>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Alternativas</h1>           \n  </div>\n  <div *ngFor=\"let alternative of project.alternatives\">\n    <hr id=\"Alternative={{alternative.name}}\">\n    <div class=\"form-group\">\n      <label>Nombre:</label>\n      <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la Alternativa\" [(ngModel)]=\"alternative.name\">\n    </div>\n    <br>\n    <div class=\"form-group\">\n      <label>Descripción</label>\n      <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"alternative.description\"></textarea>\n    </div>\n    <hr>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Prioridades</h1>      \n  </div>\n\n  <div *ngFor=\"let criterionPairwise of criteriaPairwise; let i = index\">\n    <hr id=\"Priority={{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}\">\n    <h3 style=\"text-align:center;\">{{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}</h3>\n    <app-slider [(comparison)]=\"project.criteriaComparisons[i]\" ></app-slider>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Evaluación</h1>      \n  </div>\n\n  <div *ngFor=\"let criterion of project.criteria; let i = index\">\n    <hr id=\"CriteriaContext={{criterion.name}}\">\n    <h2>Evaluación en el contexto de: {{criterion.name}}</h2>\n    <div *ngFor=\"let alternativePairwise of alternativesPairwise; let j = index\">\n      <h3 style=\"text-align:center;\">{{project.alternatives[alternativePairwise.indexItem1].name}} vs {{project.alternatives[alternativePairwise.indexItem2].name}}</h3>\n      <app-slider [(comparison)]=\"project.alternativesComparisons[i][j]\"></app-slider>\n    </div>\n  </div>\n\n  \n  <div class=\"page-header text-center\" id=\"Results\">\n    <h1>Resultados</h1>      \n  </div>\n\n  <canvas width=\"500\" height=500 id=\"demoCanvas\"></canvas>\n\n  <h3 style=\"text-align:center;\" id=\"nodesChart\">Gráfica de relaciones entre los nodos</h3>\n  <div id=\"nodesChartDisplay\" style=\"height: 400px;\"></div>\n  <br><br>\n  \n  <h3 style=\"text-align:center;\" id=\"criteriaChart\">Gráfica de criterios</h3>\n  <div id=\"criteriaChartDisplay\"></div>\n\n  <h3 style=\"text-align:center;\" id=\"table\">Matriz de resultados</h3>\n  <table *ngIf=\"goalMatrixReady\" class=\"table table-hover table-condensed table-bordered\">\n    <thead>\n      <tr>\n        <th>Alternativas</th>\n        <th *ngFor=\"let criterion of project.criteria\">{{criterion.name}}</th>\n        <th>Objetivo</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let alternative of project.alternatives; let i = index\">\n        <td>{{alternative.name}}</td>\n        <td *ngFor=\"let criterion of project.criteria; let j = index\">\n          {{(goalMatrix[i][j]*100).toFixed(1)}} %\n        </td>\n        <td>{{(goalMatrix[i][goalMatrix[i].length-1]*100).toFixed(1)}} %</td>\n      </tr>\n    </tbody>\n  </table>\n  <br><br>\n\n  <h3 style=\"text-align:center;\" id=\"chart\">Gráfica de resultados</h3>\n  <div id=\"chartDisplay\"></div>\n\n</div>\n\n"
 
 /***/ }),
 
@@ -503,10 +503,12 @@ module.exports = "<app-side-menu [project]=\"project\"\n               [criteria
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages__ = __webpack_require__("../../../../angular2-flash-messages/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_project_handling_service__ = __webpack_require__("../../../../../src/app/services/project-handling.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_logic_service__ = __webpack_require__("../../../../../src/app/services/logic.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_ahp_service__ = __webpack_require__("../../../../../src/app/services/ahp.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_chart_service__ = __webpack_require__("../../../../../src/app/services/chart.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_createjs_module__ = __webpack_require__("../../../../createjs-module/createjs.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_createjs_module___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_createjs_module__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_project_handling_service__ = __webpack_require__("../../../../../src/app/services/project-handling.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_logic_service__ = __webpack_require__("../../../../../src/app/services/logic.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_ahp_service__ = __webpack_require__("../../../../../src/app/services/ahp.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_chart_service__ = __webpack_require__("../../../../../src/app/services/chart.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PrincipalComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -517,6 +519,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -535,6 +538,44 @@ var PrincipalComponent = (function () {
         this.goalMatrix = [];
         this.goalMatrixReady = false;
     }
+    // Responsive canvas demo ---------------------------------------------------------
+    // Responsive canvas demo ---------------------------------------------------------  
+    // Responsive canvas demo ---------------------------------------------------------    
+    PrincipalComponent.prototype.ngAfterViewInit = function () {
+        this.stage = new __WEBPACK_IMPORTED_MODULE_2_createjs_module__["Stage"]("demoCanvas");
+        this.c = new __WEBPACK_IMPORTED_MODULE_2_createjs_module__["Shape"]();
+        this.t = new __WEBPACK_IMPORTED_MODULE_2_createjs_module__["Text"]("Resize the browser/frame to redraw", "24px Arial bold", "#000");
+        this.c.graphics.f("#f00").dc(0, 0, 50); // Drawn a 100x100 circle from the center
+        this.t.x = this.t.y = 20;
+        this.stage.addChild(this.c, this.t);
+        this.handleResize();
+    };
+    PrincipalComponent.prototype.onResize = function () {
+        this.handleResize();
+    };
+    PrincipalComponent.prototype.handleResize = function () {
+        console.log(this.stage);
+        var w = window.innerWidth / 2; // -2 accounts for the border
+        var h = window.innerHeight / 2;
+        this.stage.canvas.width = w;
+        this.stage.canvas.height = h;
+        //
+        var ratio = 100 / 100; // 100 is the width and height of the circle content.
+        var windowRatio = w / h;
+        var scale = w / 100;
+        if (windowRatio > ratio) {
+            scale = h / 100;
+        }
+        // Scale up to fit width or height
+        this.c.scaleX = this.c.scaleY = scale;
+        // Center the shape
+        this.c.x = w / 2;
+        this.c.y = h / 2;
+        this.stage.update();
+    };
+    // Responsive canvas demo ---------------------------------------------------------  
+    // Responsive canvas demo ---------------------------------------------------------  
+    // Responsive canvas demo ---------------------------------------------------------  
     // Form combinations ---------------------------------------------------------  
     PrincipalComponent.prototype.onNodeChanges = function () {
         this.goalMatrixReady = false;
@@ -575,13 +616,19 @@ var PrincipalComponent = (function () {
     };
     return PrincipalComponent;
 }());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('window:resize'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], PrincipalComponent.prototype, "onResize", null);
 PrincipalComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'app-principal',
         template: __webpack_require__("../../../../../src/app/components/principal/principal.component.html"),
         styles: [__webpack_require__("../../../../../src/app/components/principal/principal.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages__["FlashMessagesService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages__["FlashMessagesService"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_project_handling_service__["a" /* ProjectHandlingService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_project_handling_service__["a" /* ProjectHandlingService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__services_logic_service__["a" /* LogicService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_logic_service__["a" /* LogicService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__services_ahp_service__["a" /* AHPService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_ahp_service__["a" /* AHPService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_5__services_chart_service__["a" /* ChartService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_chart_service__["a" /* ChartService */]) === "function" && _e || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages__["FlashMessagesService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages__["FlashMessagesService"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__services_project_handling_service__["a" /* ProjectHandlingService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_project_handling_service__["a" /* ProjectHandlingService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__services_logic_service__["a" /* LogicService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_logic_service__["a" /* LogicService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_5__services_ahp_service__["a" /* AHPService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_ahp_service__["a" /* AHPService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_6__services_chart_service__["a" /* ChartService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__services_chart_service__["a" /* ChartService */]) === "function" && _e || Object])
 ], PrincipalComponent);
 
 var _a, _b, _c, _d, _e;
