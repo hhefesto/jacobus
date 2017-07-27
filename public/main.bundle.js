@@ -479,7 +479,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#workspace {\n  padding-left: 245px;\n  padding-right: 5px;\n  margin-top: -50px\n}  \n\ntextarea {\n    resize: none;\n}\n\n@media screen and (max-width:767px) {\n  #workspace {\n    padding-left: 5px;\n    padding-right: 0px;\n    margin-top: 0px\n  }  \n}", ""]);
+exports.push([module.i, "#workspace {\n  padding-left: 245px;\n  padding-right: 5px;\n  margin-top: -50px\n}\n\ntextarea {\n  resize: none;\n}\n\n#diagram {\n  width: 100%\n}\n\n@media screen and (max-width:767px) {\n  #workspace {\n    padding-left: 5px;\n    padding-right: 0px;\n    margin-top: 0px\n  }\n}", ""]);
 
 // exports
 
@@ -492,7 +492,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/principal/principal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-side-menu [project]=\"project\"\n               [criteriaPairwise]=\"criteriaPairwise\"\n               [alternativesPairwise]=\"alternativesPairwise\"\n               (notifyNodeChanges)=\"onNodeChanges($event)\"\n               (notifyCalculateDecision)=\"onCalculateDecision($event)\"\n               (notifySaveProject)=\"onSaveProject($event)\"></app-side-menu>\n\n<div id=\"workspace\">\n  <div class=\"page-header text-center\">\n    <h1>Objetivo: {{project.name}}</h1>           \n  </div>\n  <hr>\n\n  <div class=\"page-header text-center\">\n    <h1>Criterios</h1>      \n  </div>\n\n  <div *ngFor=\"let criterion of project.criteria\">\n    <hr id=\"Criterion={{criterion.name}}\">\n    <div class=\"form-group\">\n      <label>Nombre:</label>\n      <input type=\"text\" class=\"form-control\" placeholder=\"Nombre del Criterio\" [(ngModel)]=\"criterion.name\">\n    </div>\n    <br>\n    <div class=\"form-group\">\n      <label>Descripción</label>\n      <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"criterion.description\"></textarea>\n    </div>        \n    <hr>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Alternativas</h1>           \n  </div>\n  <div *ngFor=\"let alternative of project.alternatives\">\n    <hr id=\"Alternative={{alternative.name}}\">\n    <div class=\"form-group\">\n      <label>Nombre:</label>\n      <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la Alternativa\" [(ngModel)]=\"alternative.name\">\n    </div>\n    <br>\n    <div class=\"form-group\">\n      <label>Descripción</label>\n      <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"alternative.description\"></textarea>\n    </div>\n    <hr>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Prioridades</h1>      \n  </div>\n\n  <div *ngFor=\"let criterionPairwise of criteriaPairwise; let i = index\">\n    <hr id=\"Priority={{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}\">\n    <h3 style=\"text-align:center;\">{{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}</h3>\n    <app-slider [(comparison)]=\"project.criteriaComparisons[i]\" ></app-slider>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Evaluación</h1>      \n  </div>\n\n  <div *ngFor=\"let criterion of project.criteria; let i = index\">\n    <hr id=\"CriteriaContext={{criterion.name}}\">\n    <h2>Evaluación en el contexto de: {{criterion.name}}</h2>\n    <div *ngFor=\"let alternativePairwise of alternativesPairwise; let j = index\">\n      <h3 style=\"text-align:center;\">{{project.alternatives[alternativePairwise.indexItem1].name}} vs {{project.alternatives[alternativePairwise.indexItem2].name}}</h3>\n      <app-slider [(comparison)]=\"project.alternativesComparisons[i][j]\"></app-slider>\n    </div>\n  </div>\n\n  \n  <div class=\"page-header text-center\" id=\"Results\">\n    <h1>Resultados</h1>      \n  </div>\n\n  <canvas width=\"500\" height=500 id=\"demoCanvas\"></canvas>\n\n  <h3 style=\"text-align:center;\" id=\"nodesChart\">Gráfica de relaciones entre los nodos</h3>\n  <div id=\"nodesChartDisplay\" style=\"height: 400px;\"></div>\n  <br><br>\n  \n  <h3 style=\"text-align:center;\" id=\"criteriaChart\">Gráfica de criterios</h3>\n  <div id=\"criteriaChartDisplay\"></div>\n\n  <h3 style=\"text-align:center;\" id=\"table\">Matriz de resultados</h3>\n  <table *ngIf=\"goalMatrixReady\" class=\"table table-hover table-condensed table-bordered\">\n    <thead>\n      <tr>\n        <th>Alternativas</th>\n        <th *ngFor=\"let criterion of project.criteria\">{{criterion.name}}</th>\n        <th>Objetivo</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let alternative of project.alternatives; let i = index\">\n        <td>{{alternative.name}}</td>\n        <td *ngFor=\"let criterion of project.criteria; let j = index\">\n          {{(goalMatrix[i][j]*100).toFixed(1)}} %\n        </td>\n        <td>{{(goalMatrix[i][goalMatrix[i].length-1]*100).toFixed(1)}} %</td>\n      </tr>\n    </tbody>\n  </table>\n  <br><br>\n\n  <h3 style=\"text-align:center;\" id=\"chart\">Gráfica de resultados</h3>\n  <div id=\"chartDisplay\"></div>\n\n</div>\n\n"
+module.exports = "<app-side-menu [project]=\"project\"\n               [criteriaPairwise]=\"criteriaPairwise\"\n               [alternativesPairwise]=\"alternativesPairwise\"\n               (notifyNodeChanges)=\"onNodeChanges($event)\"\n               (notifyCalculateDecision)=\"onCalculateDecision($event)\"\n               (notifySaveProject)=\"onSaveProject($event)\"></app-side-menu>\n\n<div id=\"workspace\">\n  <div class=\"page-header text-center\">\n    <h1>Objetivo: {{project.name}}</h1>           \n  </div>\n  <hr>\n\n  <div class=\"page-header text-center\">\n    <h1>Criterios</h1>      \n  </div>\n\n  <div *ngFor=\"let criterion of project.criteria\">\n    <hr id=\"Criterion={{criterion.name}}\">\n    <div class=\"form-group\">\n      <label>Nombre:</label>\n      <input type=\"text\" class=\"form-control\" placeholder=\"Nombre del Criterio\" [(ngModel)]=\"criterion.name\">\n    </div>\n    <br>\n    <div class=\"form-group\">\n      <label>Descripción</label>\n      <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"criterion.description\"></textarea>\n    </div>        \n    <hr>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Alternativas</h1>           \n  </div>\n  <div *ngFor=\"let alternative of project.alternatives\">\n    <hr id=\"Alternative={{alternative.name}}\">\n    <div class=\"form-group\">\n      <label>Nombre:</label>\n      <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la Alternativa\" [(ngModel)]=\"alternative.name\">\n    </div>\n    <br>\n    <div class=\"form-group\">\n      <label>Descripción</label>\n      <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"alternative.description\"></textarea>\n    </div>\n    <hr>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Diagrama de jerarquías</h1>           \n  </div>\n  <canvas id=\"diagram\" #diagram></canvas>\n\n  <div class=\"page-header text-center\">\n    <h1>Prioridades</h1>      \n  </div>\n\n  <div *ngFor=\"let criterionPairwise of criteriaPairwise; let i = index\">\n    <hr id=\"Priority={{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}\">\n    <h3 style=\"text-align:center;\">{{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}</h3>\n    <app-slider [(comparison)]=\"project.criteriaComparisons[i]\" ></app-slider>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Evaluación</h1>      \n  </div>\n\n  <div *ngFor=\"let criterion of project.criteria; let i = index\">\n    <hr id=\"CriteriaContext={{criterion.name}}\">\n    <h2>Evaluación en el contexto de: {{criterion.name}}</h2>\n    <div *ngFor=\"let alternativePairwise of alternativesPairwise; let j = index\">\n      <h3 style=\"text-align:center;\">{{project.alternatives[alternativePairwise.indexItem1].name}} vs {{project.alternatives[alternativePairwise.indexItem2].name}}</h3>\n      <app-slider [(comparison)]=\"project.alternativesComparisons[i][j]\"></app-slider>\n    </div>\n  </div>\n\n  \n  <div class=\"page-header text-center\" id=\"Results\">\n    <h1>Resultados</h1>      \n  </div>\n\n  <h3 style=\"text-align:center;\" id=\"nodesChart\">Gráfica de relaciones entre los nodos</h3>\n  <div id=\"nodesChartDisplay\" style=\"height: 400px;\"></div>\n  <br><br>\n  \n  <h3 style=\"text-align:center;\" id=\"criteriaChart\">Gráfica de criterios</h3>\n  <div id=\"criteriaChartDisplay\"></div>\n\n  <h3 style=\"text-align:center;\" id=\"table\">Matriz de resultados</h3>\n  <table *ngIf=\"goalMatrixReady\" class=\"table table-hover table-condensed table-bordered\">\n    <thead>\n      <tr>\n        <th>Alternativas</th>\n        <th *ngFor=\"let criterion of project.criteria\">{{criterion.name}}</th>\n        <th>Objetivo</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let alternative of project.alternatives; let i = index\">\n        <td>{{alternative.name}}</td>\n        <td *ngFor=\"let criterion of project.criteria; let j = index\">\n          {{(goalMatrix[i][j]*100).toFixed(1)}} %\n        </td>\n        <td>{{(goalMatrix[i][goalMatrix[i].length-1]*100).toFixed(1)}} %</td>\n      </tr>\n    </tbody>\n  </table>\n  <br><br>\n\n  <h3 style=\"text-align:center;\" id=\"chart\">Gráfica de resultados</h3>\n  <div id=\"chartDisplay\"></div>\n\n</div>\n\n"
 
 /***/ }),
 
@@ -509,6 +509,7 @@ module.exports = "<app-side-menu [project]=\"project\"\n               [criteria
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_logic_service__ = __webpack_require__("../../../../../src/app/services/logic.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_ahp_service__ = __webpack_require__("../../../../../src/app/services/ahp.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_chart_service__ = __webpack_require__("../../../../../src/app/services/chart.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_constants_service__ = __webpack_require__("../../../../../src/app/services/constants.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PrincipalComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -526,65 +527,102 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var PrincipalComponent = (function () {
-    function PrincipalComponent(flashMessagesService, projectHandlingService, logicService, ahpService, chartService) {
+    function PrincipalComponent(flashMessagesService, projectHandlingService, logicService, ahpService, chartService, constantsService) {
         this.flashMessagesService = flashMessagesService;
         this.projectHandlingService = projectHandlingService;
         this.logicService = logicService;
         this.ahpService = ahpService;
         this.chartService = chartService;
+        this.constantsService = constantsService;
         this.criteriaPairwise = [];
         this.alternativesPairwise = [];
         this.goalMatrix = [];
         this.goalMatrixReady = false;
+        this.diagramLabels = [];
     }
-    // Responsive canvas demo ---------------------------------------------------------
-    // Responsive canvas demo ---------------------------------------------------------  
-    // Responsive canvas demo ---------------------------------------------------------    
-    PrincipalComponent.prototype.ngAfterViewInit = function () {
-        this.stage = new __WEBPACK_IMPORTED_MODULE_2_createjs_module__["Stage"]("demoCanvas");
-        this.c = new __WEBPACK_IMPORTED_MODULE_2_createjs_module__["Shape"]();
-        this.t = new __WEBPACK_IMPORTED_MODULE_2_createjs_module__["Text"]("Resize the browser/frame to redraw", "24px Arial bold", "#000");
-        this.c.graphics.f("#f00").dc(0, 0, 50); // Drawn a 100x100 circle from the center
-        this.t.x = this.t.y = 20;
-        this.stage.addChild(this.c, this.t);
-        this.handleResize();
+    PrincipalComponent.prototype.ngOnInit = function () {
+        this.project = this.projectHandlingService.getLoadedProject();
+        this.stage = new __WEBPACK_IMPORTED_MODULE_2_createjs_module__["Stage"]("diagram");
+        this.diagram = new __WEBPACK_IMPORTED_MODULE_2_createjs_module__["Shape"]();
+        this.stage.addChild(this.diagram);
+        this.onNodeChanges();
     };
     PrincipalComponent.prototype.onResize = function () {
-        this.handleResize();
+        this.drawDiagram(this.canvas.nativeElement.scrollWidth, this.canvas.nativeElement.scrollHeight);
     };
-    PrincipalComponent.prototype.handleResize = function () {
-        console.log(this.stage);
-        var w = window.innerWidth / 2; // -2 accounts for the border
-        var h = window.innerHeight / 2;
-        this.stage.canvas.width = w;
-        this.stage.canvas.height = h;
-        //
-        var ratio = 100 / 100; // 100 is the width and height of the circle content.
-        var windowRatio = w / h;
-        var scale = w / 100;
-        if (windowRatio > ratio) {
-            scale = h / 100;
-        }
-        // Scale up to fit width or height
-        this.c.scaleX = this.c.scaleY = scale;
-        // Center the shape
-        this.c.x = w / 2;
-        this.c.y = h / 2;
-        this.stage.update();
+    PrincipalComponent.prototype.ngAfterViewInit = function () {
+        var _this = this;
+        setTimeout(function (_) { return _this.onResize(); });
     };
-    // Responsive canvas demo ---------------------------------------------------------  
-    // Responsive canvas demo ---------------------------------------------------------  
-    // Responsive canvas demo ---------------------------------------------------------  
     // Form combinations ---------------------------------------------------------  
     PrincipalComponent.prototype.onNodeChanges = function () {
         this.goalMatrixReady = false;
         this.criteriaPairwise = this.logicService.getCombinations(this.project.criteria);
         this.alternativesPairwise = this.logicService.getCombinations(this.project.alternatives);
+        this.drawDiagram(this.canvas.nativeElement.scrollWidth, this.canvas.nativeElement.scrollHeight);
     };
-    PrincipalComponent.prototype.ngOnInit = function () {
-        this.project = this.projectHandlingService.getLoadedProject();
-        this.onNodeChanges();
+    PrincipalComponent.prototype.drawDiagram = function (width, height) {
+        var objectiveWidth = this.constantsService.getObjectiveWidth();
+        var nodewidth = this.constantsService.getNodeWidth();
+        var nodeHeight = this.constantsService.getNodeHeight();
+        var nodeSeparation = this.constantsService.getNodeSeparation();
+        var criteriaPosition = this.constantsService.getCriteriaPosition();
+        var alternativesPosition = this.constantsService.getAlternativesPosition();
+        var criteriaOffset = objectiveWidth / 2 - (this.project.criteria.length * nodewidth + (this.project.criteria.length - 1) * (nodeSeparation - nodewidth)) / 2;
+        var alternativesOffset = objectiveWidth / 2 - (this.project.alternatives.length * nodewidth + (this.project.alternatives.length - 1) * (nodeSeparation - nodewidth)) / 2;
+        var nodeRadius = this.constantsService.getNodeRadius();
+        var k = 0; // Label index
+        this.diagram.graphics.clear();
+        for (var i = 0; i < this.diagramLabels.length; i++) {
+            this.stage.removeChild(this.diagramLabels[i]);
+        }
+        // Objective
+        this.diagram.graphics.f("#C2EA98").rr(0, 0, objectiveWidth, nodeHeight, nodeRadius);
+        this.diagramLabels[k] = new __WEBPACK_IMPORTED_MODULE_2_createjs_module__["Text"](this.project.name, "30px Arial bold", "#000");
+        var bounds = this.diagramLabels[k].getBounds();
+        var pt = this.diagram.localToLocal((objectiveWidth - bounds.width) / 2, (nodeHeight - bounds.height) / 2, this.diagramLabels[k]);
+        this.diagramLabels[k].x = pt.x;
+        this.diagramLabels[k].y = pt.y;
+        k++;
+        // Criteria
+        for (var i = 0; i < this.project.criteria.length; i++, k++) {
+            this.diagram.graphics.f("#FFE74E").rr(criteriaOffset + i * nodeSeparation, criteriaPosition, nodewidth, nodeHeight, nodeRadius);
+            this.diagram.graphics.s('black').mt(objectiveWidth / 2, nodeHeight).lt(criteriaOffset + i * nodeSeparation + nodewidth / 2, criteriaPosition).es();
+            this.diagramLabels[k] = new __WEBPACK_IMPORTED_MODULE_2_createjs_module__["Text"](this.project.criteria[i].name, "18px Arial bold", "#000");
+            bounds = this.diagramLabels[k].getBounds();
+            pt = this.diagram.localToLocal(criteriaOffset + i * nodeSeparation + nodewidth / 2 - bounds.width / 2, criteriaPosition + (nodeHeight - bounds.height) / 2, this.diagramLabels[k]);
+            this.diagramLabels[k].x = pt.x;
+            this.diagramLabels[k].y = pt.y;
+        }
+        // Alternatives
+        for (var i = 0; i < this.project.alternatives.length; i++, k++) {
+            this.diagram.graphics.f("#6FE9EF").rr(alternativesOffset + i * nodeSeparation, alternativesPosition, nodewidth, nodeHeight, nodeRadius);
+            for (var j = 0; j < this.project.criteria.length; j++) {
+                this.diagram.graphics.s('black').mt(criteriaOffset + j * nodeSeparation + nodewidth / 2, criteriaPosition + nodeHeight).lt(alternativesOffset + i * nodeSeparation + nodewidth / 2, alternativesPosition).es();
+            }
+            this.diagramLabels[k] = new __WEBPACK_IMPORTED_MODULE_2_createjs_module__["Text"](this.project.alternatives[i].name, "18px Arial bold", "#000");
+            bounds = this.diagramLabels[k].getBounds();
+            pt = this.diagram.localToLocal(alternativesOffset + i * nodeSeparation + nodewidth / 2 - bounds.width / 2, alternativesPosition + (nodeHeight - bounds.height) / 2, this.diagramLabels[k]);
+            this.diagramLabels[k].x = pt.x;
+            this.diagramLabels[k].y = pt.y;
+        }
+        this.stage.canvas.width = width;
+        this.stage.canvas.height = height;
+        var ratio = 100 / 100; // 100 is the width and height of the circle content.
+        var windowRatio = width / height;
+        var scale = width / 100;
+        if (windowRatio > ratio) {
+            scale = height / 100;
+        }
+        // Scale up to fit width or height
+        this.diagram.scaleX = this.diagram.scaleY = scale / 5;
+        for (var i = 0; i < k; i++) {
+            this.stage.addChild(this.diagramLabels[i]);
+            this.diagramLabels[i].scaleX = this.diagramLabels[i].scaleY = scale / 5;
+        }
+        this.stage.update();
     };
     PrincipalComponent.prototype.ngOnDestroy = function () {
         this.projectHandlingService.storeProject(this.project);
@@ -617,6 +655,10 @@ var PrincipalComponent = (function () {
     return PrincipalComponent;
 }());
 __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('diagram'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _a || Object)
+], PrincipalComponent.prototype, "canvas", void 0);
+__decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('window:resize'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -628,10 +670,10 @@ PrincipalComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/components/principal/principal.component.html"),
         styles: [__webpack_require__("../../../../../src/app/components/principal/principal.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages__["FlashMessagesService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages__["FlashMessagesService"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__services_project_handling_service__["a" /* ProjectHandlingService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_project_handling_service__["a" /* ProjectHandlingService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__services_logic_service__["a" /* LogicService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_logic_service__["a" /* LogicService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_5__services_ahp_service__["a" /* AHPService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_ahp_service__["a" /* AHPService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_6__services_chart_service__["a" /* ChartService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__services_chart_service__["a" /* ChartService */]) === "function" && _e || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages__["FlashMessagesService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages__["FlashMessagesService"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__services_project_handling_service__["a" /* ProjectHandlingService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_project_handling_service__["a" /* ProjectHandlingService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__services_logic_service__["a" /* LogicService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_logic_service__["a" /* LogicService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_5__services_ahp_service__["a" /* AHPService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_ahp_service__["a" /* AHPService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_6__services_chart_service__["a" /* ChartService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__services_chart_service__["a" /* ChartService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_7__services_constants_service__["a" /* ConstantsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__services_constants_service__["a" /* ConstantsService */]) === "function" && _g || Object])
 ], PrincipalComponent);
 
-var _a, _b, _c, _d, _e;
+var _a, _b, _c, _d, _e, _f, _g;
 //# sourceMappingURL=principal.component.js.map
 
 /***/ }),
@@ -657,7 +699,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/principal/side-menu/side-menu.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-default\"> \n  <div class=\"navbar-header\">\n    <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#opciones\">\n      <span class=\"icon-bar\"></span>\n      <span class=\"icon-bar\"></span>\n      <span class=\"icon-bar\"></span>\n    </button>\n    <span class=\"navbar-brand\" style=\"text-align: center\">Opciones</span>\n  </div>      \n  <div class=\"collapse navbar-collapse\" id=\"opciones\">\n    <div class=\"btn-group-vertical btn-block\" role=\"group\">\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#criterios\">\n        Criterios <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"criterios\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\"  (click)=\"addCriterion()\"><a>Nuevo <span class=\"glyphicon glyphicon-plus\"></span></a></li>\n        <li role=\"presentation\" *ngFor=\"let criterion of project.criteria\">\n            <a href=\"principal#Criterion={{criterion.name}}\">{{criterion.name}} <span class=\"glyphicon glyphicon-remove remove\" (click)=\"removeCriterion(criterion)\" ></span></a>\n        </li>\n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#alternativas\">\n        Alternativas <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"alternativas\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\" (click)=\"addAlternative()\" ><a>Nuevo <span class=\"glyphicon glyphicon-plus\"></span></a></li>\n        <li role=\"presentation\" *ngFor=\"let alternative of project.alternatives\">\n            <a href=\"principal#Alternative={{alternative.name}}\">{{alternative.name}} <span class=\"glyphicon glyphicon-remove remove\" (click)=\"removeAlternative(alternative)\" ></span></a>\n        </li>\n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#prioridades\">\n        Prioridades <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"prioridades\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\" *ngFor=\"let criterionPairwise of criteriaPairwise\">\n            <a href=\"principal#Priority={{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}\">\n              {{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}</a>\n        </li>\n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#evaluacion\">\n        Contexto de Evaluación <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"evaluacion\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\" *ngFor=\"let criterion of project.criteria\">\n          <a href=\"principal#CriteriaContext={{criterion.name}}\">{{criterion.name}}</a>\n        </li>          \n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#resultados\">\n        Resultados <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"resultados\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\" (click)=\"onResultsClick()\"><a>Calcular</a></li>\n        <li role=\"presentation\"><a href=\"principal#nodesChart\">Gráfica de Nodos</a></li>\n        <li role=\"presentation\"><a href=\"principal#criteriaChart\">Gráfica de Criterios</a></li>\n        <li role=\"presentation\"><a href=\"principal#table\">Matriz de Resultados</a></li>\n        <li role=\"presentation\"><a href=\"principal#chart\">Gráfica de Resultados</a></li>\n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"onSaveClick()\">Guardar</button>\n\n    </div>\n  </div>\n</nav>"
+module.exports = "<nav class=\"navbar navbar-default\"> \n  <div class=\"navbar-header\">\n    <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#opciones\">\n      <span class=\"icon-bar\"></span>\n      <span class=\"icon-bar\"></span>\n      <span class=\"icon-bar\"></span>\n    </button>\n    <span class=\"navbar-brand\" style=\"text-align: center\">Opciones</span>\n  </div>      \n  <div class=\"collapse navbar-collapse\" id=\"opciones\">\n    <div class=\"btn-group-vertical btn-block\" role=\"group\">\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#criterios\">\n        Criterios <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"criterios\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\"  (click)=\"addCriterion()\"><a>Nuevo <span class=\"glyphicon glyphicon-plus\"></span></a></li>\n        <li role=\"presentation\" *ngFor=\"let criterion of project.criteria\">\n            <a href=\"principal#Criterion={{criterion.name}}\">{{criterion.name}} <span class=\"glyphicon glyphicon-remove remove\" (click)=\"removeCriterion(criterion)\" ></span></a>\n        </li>\n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#alternativas\">\n        Alternativas <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"alternativas\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\" (click)=\"addAlternative()\" ><a>Nuevo <span class=\"glyphicon glyphicon-plus\"></span></a></li>\n        <li role=\"presentation\" *ngFor=\"let alternative of project.alternatives\">\n            <a href=\"principal#Alternative={{alternative.name}}\">{{alternative.name}} <span class=\"glyphicon glyphicon-remove remove\" (click)=\"removeAlternative(alternative)\" ></span></a>\n        </li>\n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#evaluadores\">\n        Evaluadores <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"evaluadores\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\" (click)=\"addEvaluator()\" ><a>Nuevo <span class=\"glyphicon glyphicon-plus\"></span></a></li>\n        <li role=\"presentation\" *ngFor=\"let evaluator of evaluators\">\n            <a>{{evaluator}} <span class=\"glyphicon glyphicon-remove remove\" (click)=\"removeAlternative(alternative)\" ></span></a>\n        </li>\n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#prioridades\">\n        Prioridades <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"prioridades\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\" *ngFor=\"let criterionPairwise of criteriaPairwise\">\n            <a href=\"principal#Priority={{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}\">\n              {{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}</a>\n        </li>\n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#evaluacion\">\n        Contexto de Evaluación <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"evaluacion\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\" *ngFor=\"let criterion of project.criteria\">\n          <a href=\"principal#CriteriaContext={{criterion.name}}\">{{criterion.name}}</a>\n        </li>          \n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#resultados\">\n        Resultados <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"resultados\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\" (click)=\"onResultsClick()\"><a>Calcular</a></li>\n        <li role=\"presentation\"><a href=\"principal#nodesChart\">Gráfica de Nodos</a></li>\n        <li role=\"presentation\"><a href=\"principal#criteriaChart\">Gráfica de Criterios</a></li>\n        <li role=\"presentation\"><a href=\"principal#table\">Matriz de Resultados</a></li>\n        <li role=\"presentation\"><a href=\"principal#chart\">Gráfica de Resultados</a></li>\n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"onSaveClick()\">Guardar</button>\n\n    </div>\n  </div>\n</nav>"
 
 /***/ }),
 
@@ -690,6 +732,7 @@ var SideMenuComponent = (function () {
         this.notifyNodeChanges = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
         this.notifyCalculateDecision = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
         this.notifySaveProject = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.evaluators = [];
     }
     SideMenuComponent.prototype.addAlternative = function () {
         var index = this.project.alternatives.length + 1;
@@ -729,6 +772,9 @@ var SideMenuComponent = (function () {
     };
     SideMenuComponent.prototype.onSaveClick = function () {
         this.notifySaveProject.emit();
+    };
+    SideMenuComponent.prototype.addEvaluator = function () {
+        this.evaluators[this.evaluators.length] = 'Evaluador #' + (this.evaluators.length + 1);
     };
     return SideMenuComponent;
 }());
@@ -1654,6 +1700,27 @@ var ConstantsService = (function () {
     };
     ConstantsService.prototype.getEvaluationLevels = function () {
         return 17; // 9 8 7 6 5 4 3 2 1 2 3 4 5 6 7 8 9
+    };
+    ConstantsService.prototype.getObjectiveWidth = function () {
+        return 1000; // canvas units full width
+    };
+    ConstantsService.prototype.getNodeHeight = function () {
+        return 50; // canvas units
+    };
+    ConstantsService.prototype.getNodeWidth = function () {
+        return 100; // canvas units
+    };
+    ConstantsService.prototype.getNodeSeparation = function () {
+        return 150; // canvas units
+    };
+    ConstantsService.prototype.getCriteriaPosition = function () {
+        return 150; // canvas units
+    };
+    ConstantsService.prototype.getAlternativesPosition = function () {
+        return 350; // canvas units
+    };
+    ConstantsService.prototype.getNodeRadius = function () {
+        return 10; // canvas units
     };
     return ConstantsService;
 }());
