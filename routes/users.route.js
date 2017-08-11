@@ -88,6 +88,30 @@ router.post('/authenticate', (req, res, next) => {
   });
 });
 
+// Search user for evaluation
+router.post('/search', (req, res, next) => {
+  const email = req.body.email;
+
+  // Check if user exists
+  User.getUserByEmail(email, (err, user) => {
+    if(err)
+      throw err;
+    if(!user){
+      return res.json({success: false, msg: 'Usuario no encontrado'});
+    }
+
+    res.json({
+      success: true,
+      user: {
+         id: user._id,
+         name: user.name,
+         username: user.username,
+         email: user.email
+       }     
+    });
+  });
+});
+
 router.get('/profile', passport.authenticate(
   'jwt',
   {session:false}),
