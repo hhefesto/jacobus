@@ -8,7 +8,7 @@ const projectSchema = require('./project.schema');
 const Project = mongoose.model('Project', projectSchema);
 
 Project.getProjects = (masterId, callback) => {
-  const query = {masterId: masterId};
+  const query = {$or: [{masterId: masterId}, {evaluators: {$elemMatch: {_id: masterId}}}]};
   Project.find(query, callback).sort({updated: -1}).select({
     _id: 1, name: 1, updated: 1
   });

@@ -30,15 +30,6 @@ const projectSchema = mongoose.Schema({
     default: Date.now
   },
   evaluators: [{
-    _id: false,
-    evaluatorId: {
-      type: String,
-      require: true,
-    },
-    email: {
-      type: String,
-      required: true
-    },
     status: {
       type: Boolean,
       default: false

@@ -74,7 +74,6 @@ router.post('/authenticate', (req, res, next) => {
             user: {
               id: user._id,
               name: user.name,
-              username: user.username,
               email: user.email
             },
             projects: projects
@@ -105,7 +104,6 @@ router.post('/search', (req, res, next) => {
       user: {
          id: user._id,
          name: user.name,
-         username: user.username,
          email: user.email
        }     
     });
