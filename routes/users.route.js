@@ -110,6 +110,27 @@ router.post('/search', (req, res, next) => {
   });
 });
 
+router.post('/getdata', (req, res, next) =>{
+  const id = req.body._id;
+  
+  User.getUserById(id, (err, user) => {
+    if(err)
+      throw err;
+    if(!user){
+      return res.json({success: false, msg: 'Usuario no encontrado'});
+    }
+
+    res.json({
+      success: true,
+      user: {
+         id: user._id,
+         name: user.name,
+         email: user.email
+       }     
+    });
+  });
+});
+
 router.get('/profile', passport.authenticate(
   'jwt',
   {session:false}),
