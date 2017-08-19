@@ -74,7 +74,6 @@ router.post('/authenticate', (req, res, next) => {
             user: {
               id: user._id,
               name: user.name,
-              username: user.username,
               email: user.email
             },
             projects: projects
@@ -84,6 +83,50 @@ router.post('/authenticate', (req, res, next) => {
       
       else
         res.json({success: false, msg: 'Password incorrecto'});
+    });
+  });
+});
+
+// Search user for evaluation
+router.post('/search', (req, res, next) => {
+  const email = req.body.email;
+
+  // Check if user exists
+  User.getUserByEmail(email, (err, user) => {
+    if(err)
+      throw err;
+    if(!user){
+      return res.json({success: false, msg: 'Usuario no encontrado'});
+    }
+
+    res.json({
+      success: true,
+      user: {
+         id: user._id,
+         name: user.name,
+         email: user.email
+       }     
+    });
+  });
+});
+
+router.post('/getdata', (req, res, next) =>{
+  const id = req.body._id;
+  
+  User.getUserById(id, (err, user) => {
+    if(err)
+      throw err;
+    if(!user){
+      return res.json({success: false, msg: 'Usuario no encontrado'});
+    }
+
+    res.json({
+      success: true,
+      user: {
+         id: user._id,
+         name: user.name,
+         email: user.email
+       }     
     });
   });
 });
