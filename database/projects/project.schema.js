@@ -28,7 +28,15 @@ const projectSchema = mongoose.Schema({
   updated: {
     type: Date,
     default: Date.now
-  }
+  },
+  evaluators: [{
+    status: {
+      type: Boolean,
+      default: false
+    },
+    criteriaComparisons: [Number],
+    alternativesComparisons: [[Number]],
+  }]
 });
 
 projectSchema.set('versionKey', false);

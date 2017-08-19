@@ -185,7 +185,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".pending {\n    background : #DDBB44\n}", ""]);
 
 // exports
 
@@ -198,7 +198,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"panel panel-primary\">\n    <div class=\"panel-heading\">\n      <h3 class=\"panel-title\">Crear nuevo objetivo</h3>\n    </div>\n    <div class=\"panel-body\">\n      <form (submit)=\"onCreateProject()\">\n        <div class=\"form-group\">\n          <label>Objetivo</label>\n          <input type=\"text\" class=\"form-control\" [(ngModel)]=\"newProjectName\" placeholder=\"Nuevo Objetivo\" name=\"newProjectName\">\n        </div>\n        <input type=\"submit\" class=\"btn btn-success\" value=\"Crear\">\n      </form>\n    </div>\n  </div>\n    \n  <div class=\"panel panel-primary\">\n    <div class=\"panel-heading\">\n      <h3 class=\"panel-title\">Abrir un objetivo guardado</h3>\n    </div>\n    <table class=\"table table-hover table-striped container\">\n      <tr class=\"active row\">\n        <th class=\"col-md-8\">Objetivo</th>\n        <th class=\"col-md-3\">Modificado</th>\n        <th class=\"col-md-1 text-center\">Borrar</th>\n      </tr>\n      <tr *ngFor=\"let project of projects ; let i=index\" class=\"row\">\n        <th class=\"col-md-8\" (click)=onSelectProject(i)>{{project.name}}</th>\n        <th class=\"col-md-3\" (click)=onSelectProject(i)>{{project.updated}}</th>\n        <th class=\"col-md-1 text-center\">\n          <button type=\"button\" class=\"glyphicon glyphicon-remove remove btn-link text-danger\"\n            (click)=onSelectProjectToRemove(project)\n            data-toggle=\"modal\" data-target=\"#confirmacion\"></button>\n        </th>\n      </tr>\n    </table>\n  </div>\n  \n  <div class=\"modal fade\" id=\"confirmacion\" role=\"dialog\">\n    <div class=\"modal-dialog\">\n      <div class=\"modal-content\">\n        <div class=\"modal-body\">\n          <p>¿Deseas eliminar el objetivo?</p>\n          <p>{{projectToRemove.name}}</p>\n        </div>\n        <div class=\"modal-footer\">\n          <button type=\"button\" class=\"btn btn-success\" data-dismiss=\"modal\" (click)=\"onRemoveProject()\">Aceptar</button>\n          <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">Cancelar</button>\n        </div>\n      </div>    \n    </div>\n  </div>\n</div>\n  \n\n\n\n\n"
+module.exports = "<div class=\"container\">\n  <div class=\"panel panel-primary\">\n    <div class=\"panel-heading\">\n      <h3 class=\"panel-title\">Crear nuevo objetivo</h3>\n    </div>\n    <div class=\"panel-body\">\n      <form (submit)=\"onCreateProject()\">\n        <div class=\"form-group\">\n          <label>Objetivo</label>\n          <input type=\"text\" class=\"form-control\" [(ngModel)]=\"newProjectName\" placeholder=\"Nuevo Objetivo\" name=\"newProjectName\">\n        </div>\n        <input type=\"submit\" class=\"btn btn-success\" value=\"Crear\">\n      </form>\n    </div>\n  </div>\n    \n  <div class=\"panel panel-primary\">\n    <div class=\"panel-heading\">\n      <h3 class=\"panel-title\">Abrir un objetivo guardado</h3>\n    </div>\n    <table class=\"table table-hover table-striped container\">\n      <tr class=\"active row\">\n        <th class=\"col-md-8\">Objetivo</th>\n        <th class=\"col-md-3\">Modificado</th>\n        <th class=\"col-md-1 text-center\">Borrar</th>\n      </tr>\n      <tr *ngFor=\"let project of projects; let i=index\" class=\"row\">\n        <div *ngIf=\"userId == project.masterId; then master else evaluator\"></div>\n        <ng-template #master>\n          <th class=\"col-md-8\" (click)=onSelectProject(i)>{{project.name}}</th>\n          <th class=\"col-md-3\" (click)=onSelectProject(i)>{{project.updated}}</th>\n          <th class=\"col-md-1 text-center\">\n            <button type=\"button\" class=\"glyphicon glyphicon-remove remove btn-link text-danger\"\n              (click)=onSelectProjectToRemove(project)\n              data-toggle=\"modal\" data-target=\"#confirmacion\"></button>\n          </th>\n        </ng-template>\n        <ng-template #evaluator>\n          <th class=\"col-md-8 pending\" (click)=onSelectProject(i)>{{project.name}}</th>\n          <th class=\"col-md-3 pending\" (click)=onSelectProject(i)>{{project.updated}}</th>\n          <th class=\"col-md-1 text-center pending\">\n            <button type=\"button\" class=\"glyphicon glyphicon-remove remove btn-link text-danger\"\n              (click)=onSelectProjectToRemove(project)\n              data-toggle=\"modal\" data-target=\"#confirmacion\"></button>\n          </th>\n        </ng-template>\n      </tr>\n    </table>\n  </div>\n  \n  <div class=\"modal fade\" id=\"confirmacion\" role=\"dialog\">\n    <div class=\"modal-dialog\">\n      <div class=\"modal-content\">\n        <div class=\"modal-body\">\n          <p>¿Deseas eliminar el objetivo?</p>\n          <p>{{projectToRemove.name}}</p>\n        </div>\n        <div class=\"modal-footer\">\n          <button type=\"button\" class=\"btn btn-success\" data-dismiss=\"modal\" (click)=\"onRemoveProject()\">Aceptar</button>\n          <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">Cancelar</button>\n        </div>\n      </div>    \n    </div>\n  </div>\n</div>\n  \n\n\n\n\n"
 
 /***/ }),
 
@@ -243,6 +243,7 @@ var DashboardComponent = (function () {
         };
     }
     DashboardComponent.prototype.ngOnInit = function () {
+        this.userId = JSON.parse(localStorage.getItem('user')).id;
         this.projects = JSON.parse(localStorage.getItem('projects'));
         this.formatDate();
     };
@@ -251,6 +252,7 @@ var DashboardComponent = (function () {
         this.projectHandlingService.createProject(this.newProjectName).subscribe(function (data) {
             if (data.success) {
                 _this.flashMessagesService.show(data.msg, { cssClass: 'alert-success', timeout: 3000 });
+                data.project.imMaster = _this.userId == data.project.masterId;
                 localStorage.setItem('project', JSON.stringify(data.project));
                 localStorage.setItem('projects', JSON.stringify(data.projects));
                 _this.projects = data.projects;
@@ -267,6 +269,7 @@ var DashboardComponent = (function () {
         this.projectHandlingService.loadProject(projectIndex).subscribe(function (data) {
             if (data.success) {
                 _this.flashMessagesService.show(data.msg, { cssClass: 'alert-success', timeout: 3000 });
+                data.project.imMaster = _this.userId == data.project.masterId;
                 localStorage.setItem('project', JSON.stringify(data.project));
                 _this.router.navigate(['/principal']);
             }
@@ -479,7 +482,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#workspace {\n  padding-left: 245px;\n  padding-right: 5px;\n  margin-top: -50px\n}\n\ntextarea {\n  resize: none;\n}\n\n#diagram {\n  width: 100%\n}\n\n@media screen and (max-width:767px) {\n  #workspace {\n    padding-left: 5px;\n    padding-right: 0px;\n    margin-top: 0px\n  }\n}", ""]);
+exports.push([module.i, "#workspace {\n  padding-left: 245px;\n  padding-right: 5px;\n  margin-top: -50px\n}\n\ntextarea {\n  resize: none;\n}\n\n#diagram {\n  width: 100%\n}\n\n@media screen and (max-width:767px) {\n  #workspace {\n    padding-left: 5px;\n    padding-right: 0px;\n    margin-top: 0px\n  }\n}\n\n.form-inline > * {\n   margin:10px 5px;\n}", ""]);
 
 // exports
 
@@ -492,7 +495,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/principal/principal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-side-menu [project]=\"project\"\n               [criteriaPairwise]=\"criteriaPairwise\"\n               [alternativesPairwise]=\"alternativesPairwise\"\n               (notifyNodeChanges)=\"onNodeChanges($event)\"\n               (notifyCalculateDecision)=\"onCalculateDecision($event)\"\n               (notifySaveProject)=\"onSaveProject($event)\"></app-side-menu>\n\n<div id=\"workspace\">\n  <div class=\"page-header text-center\">\n    <h1>Objetivo: {{project.name}}</h1>           \n  </div>\n  <hr>\n\n  <div class=\"page-header text-center\">\n    <h1>Criterios</h1>      \n  </div>\n\n  <div *ngFor=\"let criterion of project.criteria\">\n    <hr id=\"Criterion={{criterion.name}}\">\n    <div class=\"form-group\">\n      <label>Nombre:</label>\n      <input type=\"text\" class=\"form-control\" placeholder=\"Nombre del Criterio\" [(ngModel)]=\"criterion.name\">\n    </div>\n    <br>\n    <div class=\"form-group\">\n      <label>Descripción</label>\n      <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"criterion.description\"></textarea>\n    </div>        \n    <hr>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Alternativas</h1>           \n  </div>\n  <div *ngFor=\"let alternative of project.alternatives\">\n    <hr id=\"Alternative={{alternative.name}}\">\n    <div class=\"form-group\">\n      <label>Nombre:</label>\n      <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la Alternativa\" [(ngModel)]=\"alternative.name\">\n    </div>\n    <br>\n    <div class=\"form-group\">\n      <label>Descripción</label>\n      <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"alternative.description\"></textarea>\n    </div>\n    <hr>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Diagrama de jerarquías</h1>           \n  </div>\n  <canvas id=\"diagram\" #diagram></canvas>\n\n  <div class=\"page-header text-center\">\n    <h1>Prioridades</h1>      \n  </div>\n\n  <div *ngFor=\"let criterionPairwise of criteriaPairwise; let i = index\">\n    <hr id=\"Priority={{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}\">\n    <h3 style=\"text-align:center;\">{{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}</h3>\n    <app-slider [(comparison)]=\"project.criteriaComparisons[i]\" ></app-slider>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Evaluación</h1>      \n  </div>\n\n  <div *ngFor=\"let criterion of project.criteria; let i = index\">\n    <hr id=\"CriteriaContext={{criterion.name}}\">\n    <h2>Evaluación en el contexto de: {{criterion.name}}</h2>\n    <div *ngFor=\"let alternativePairwise of alternativesPairwise; let j = index\">\n      <h3 style=\"text-align:center;\">{{project.alternatives[alternativePairwise.indexItem1].name}} vs {{project.alternatives[alternativePairwise.indexItem2].name}}</h3>\n      <app-slider [(comparison)]=\"project.alternativesComparisons[i][j]\"></app-slider>\n    </div>\n  </div>\n\n  \n  <div class=\"page-header text-center\" id=\"Results\">\n    <h1>Resultados</h1>      \n  </div>\n\n  <h3 style=\"text-align:center;\" id=\"nodesChart\">Gráfica de relaciones entre los nodos</h3>\n  <div id=\"nodesChartDisplay\" style=\"height: 400px;\"></div>\n  <br><br>\n  \n  <h3 style=\"text-align:center;\" id=\"criteriaChart\">Gráfica de criterios</h3>\n  <div id=\"criteriaChartDisplay\"></div>\n\n  <h3 style=\"text-align:center;\" id=\"table\">Matriz de resultados</h3>\n  <table *ngIf=\"goalMatrixReady\" class=\"table table-hover table-condensed table-bordered\">\n    <thead>\n      <tr>\n        <th>Alternativas</th>\n        <th *ngFor=\"let criterion of project.criteria\">{{criterion.name}}</th>\n        <th>Objetivo</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let alternative of project.alternatives; let i = index\">\n        <td>{{alternative.name}}</td>\n        <td *ngFor=\"let criterion of project.criteria; let j = index\">\n          {{(goalMatrix[i][j]*100).toFixed(1)}} %\n        </td>\n        <td>{{(goalMatrix[i][goalMatrix[i].length-1]*100).toFixed(1)}} %</td>\n      </tr>\n    </tbody>\n  </table>\n  <br><br>\n\n  <h3 style=\"text-align:center;\" id=\"chart\">Gráfica de resultados</h3>\n  <div id=\"chartDisplay\"></div>\n\n</div>\n\n"
+module.exports = "<app-side-menu [project]=\"project\"\n               [criteriaPairwise]=\"criteriaPairwise\"\n               [alternativesPairwise]=\"alternativesPairwise\"\n               (notifyNodeChanges)=\"onNodeChanges($event)\"\n               (notifyCalculateDecision)=\"onCalculateDecision($event)\"\n               (notifySaveProject)=\"onSaveProject($event)\"></app-side-menu>\n\n<div id=\"workspace\">\n  <div class=\"page-header text-center\">\n    <h1>Objetivo: {{project.name}}</h1>           \n  </div>\n  <hr>\n\n  <div class=\"page-header text-center\">\n    <h1>Criterios</h1>      \n  </div>\n  <div *ngFor=\"let criterion of project.criteria\">\n    <hr id=\"Criterion={{criterion.name}}\">\n    <div class=\"form-group\">\n      <label>Nombre:</label>\n      <div *ngIf=\"project.imMaster; then enabledEditCriteria else disabledEditCriteria\"></div>\n      <ng-template #enabledEditCriteria>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Nombre del Criterio\" [(ngModel)]=\"criterion.name\">\n      </ng-template>\n      <ng-template #disabledEditCriteria>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Nombre del Criterio\" [(ngModel)]=\"criterion.name\" disabled>\n      </ng-template>\n    </div>\n    <br>\n    <div class=\"form-group\">\n      <label>Descripción</label>\n      <div *ngIf=\"project.imMaster; then enabledEditCriteriaDescription else disabledEditCriteriaDescription\"></div>\n      <ng-template #enabledEditCriteriaDescription>\n        <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"criterion.description\"></textarea>\n      </ng-template>\n      <ng-template #disabledEditCriteriaDescription>\n        <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"criterion.description\" disabled></textarea>\n      </ng-template>\n    </div>        \n    <hr>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Alternativas</h1>           \n  </div>\n  <div *ngFor=\"let alternative of project.alternatives\">\n    <hr id=\"Alternative={{alternative.name}}\">\n    <div class=\"form-group\">\n      <label>Nombre:</label>\n      <div *ngIf=\"project.imMaster; then enabledEditAlternatives else disabledEditAlternatives\"></div>\n      <ng-template #enabledEditAlternatives>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la Alternativa\" [(ngModel)]=\"alternative.name\">\n      </ng-template>\n      <ng-template #disabledEditAlternatives>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la Alternativa\" [(ngModel)]=\"alternative.name\" disabled>\n      </ng-template>\n    </div>\n    <br>\n    <div class=\"form-group\">\n      <label>Descripción</label>\n      <div *ngIf=\"project.imMaster; then enabledEditAlternativesDescription else disabledEditAlternativesDescription\"></div>\n      <ng-template #enabledEditAlternativesDescription>\n        <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"alternative.description\"></textarea>\n      </ng-template>\n      <ng-template #disabledEditAlternativesDescription>\n        <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"alternative.description\" disabled></textarea>\n      </ng-template>\n\n    </div>\n    <hr>\n  </div>\n\n  <div *ngIf=\"project.imMaster\">\n    <div class=\"page-header text-center\">\n      <h1>Evaluadores</h1>           \n    </div>\n    <div *ngFor=\"let evaluator of project.evaluators\">\n      <hr id=\"Evaluator={{evaluator.email}}\">\n      <form class=\"form-inline\" (submit)=\"onSearchEvaluator(evaluator)\">\n        <div class=\"form-group\">\n          <label>Email</label>\n          <input type=\"text\" [(ngModel)]=\"evaluator.email\" name='email' class=\"form-control\" placeholder=\"evaluador@mail.com\">\n          <button type=\"submit\" class=\"btn btn-success\">Buscar</button>\n        </div>\n        <div class=\"form-group\">\n          <label>Nombre:</label>\n          <input type=\"text\" [(ngModel)]=\"evaluator.name\" name='name' class=\"form-control\" placeholder=\"Nombre del evaluador\" disabled>\n        </div>\n      </form>\n    </div>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Diagrama de jerarquías</h1>           \n  </div>\n  <canvas id=\"diagram\" #diagram></canvas>\n\n  <div class=\"page-header text-center\">\n    <h1>Prioridades</h1>      \n  </div>\n  <div *ngFor=\"let criterionPairwise of criteriaPairwise; let i = index\">\n    <hr id=\"Priority={{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}\">\n    <h3 style=\"text-align:center;\">{{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}</h3>\n    <app-slider [(comparison)]=\"criteriaComparisons[i]\" ></app-slider>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Evaluación</h1>      \n  </div>\n  <div *ngFor=\"let criterion of project.criteria; let i = index\">\n    <hr id=\"CriteriaContext={{criterion.name}}\">\n    <h2>Evaluación en el contexto de: {{criterion.name}}</h2>\n    <div *ngFor=\"let alternativePairwise of alternativesPairwise; let j = index\">\n      <h3 style=\"text-align:center;\">{{project.alternatives[alternativePairwise.indexItem1].name}} vs {{project.alternatives[alternativePairwise.indexItem2].name}}</h3>\n      <app-slider [(comparison)]=\"alternativesComparisons[i][j]\"></app-slider>\n    </div>\n  </div>\n\n  \n  <div class=\"page-header text-center\" id=\"Results\">\n    <h1>Resultados</h1>      \n  </div>\n\n  <h3 style=\"text-align:center;\" id=\"nodesChart\">Gráfica de relaciones entre los nodos</h3>\n  <div id=\"nodesChartDisplay\" style=\"height: 400px;\"></div>\n  <br><br>\n  \n  <h3 style=\"text-align:center;\" id=\"criteriaChart\">Gráfica de criterios</h3>\n  <div id=\"criteriaChartDisplay\"></div>\n\n  <h3 style=\"text-align:center;\" id=\"table\">Matriz de resultados</h3>\n  <table *ngIf=\"goalMatrixReady\" class=\"table table-hover table-condensed table-bordered\">\n    <thead>\n      <tr>\n        <th>Alternativas</th>\n        <th *ngFor=\"let criterion of project.criteria\">{{criterion.name}}</th>\n        <th>Objetivo</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let alternative of project.alternatives; let i = index\">\n        <td>{{alternative.name}}</td>\n        <td *ngFor=\"let criterion of project.criteria; let j = index\">\n          {{(goalMatrix[i][j]*100).toFixed(1)}} %\n        </td>\n        <td>{{(goalMatrix[i][goalMatrix[i].length-1]*100).toFixed(1)}} %</td>\n      </tr>\n    </tbody>\n  </table>\n  <br><br>\n\n  <h3 style=\"text-align:center;\" id=\"chart\">Gráfica de resultados</h3>\n  <div id=\"chartDisplay\"></div>\n\n  <h3 style=\"text-align:center;\" id=\"chart\">Resultado completo</h3>\n  <div *ngFor=\"let alternative of project.alternatives; let i = index\">\n    <label>{{alternative.name}}: </label>\n    <label>{{vector[i]}}</label>\n    <br>\n\n  </div>\n\n</div>\n\n"
 
 /***/ }),
 
@@ -510,6 +513,8 @@ module.exports = "<app-side-menu [project]=\"project\"\n               [criteria
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_ahp_service__ = __webpack_require__("../../../../../src/app/services/ahp.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_chart_service__ = __webpack_require__("../../../../../src/app/services/chart.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_constants_service__ = __webpack_require__("../../../../../src/app/services/constants.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__services_validate_service__ = __webpack_require__("../../../../../src/app/services/validate.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_authentication_service__ = __webpack_require__("../../../../../src/app/services/authentication.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PrincipalComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -528,22 +533,57 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var PrincipalComponent = (function () {
-    function PrincipalComponent(flashMessagesService, projectHandlingService, logicService, ahpService, chartService, constantsService) {
+    function PrincipalComponent(flashMessagesService, projectHandlingService, logicService, ahpService, chartService, constantsService, validateService, authenticationService) {
         this.flashMessagesService = flashMessagesService;
         this.projectHandlingService = projectHandlingService;
         this.logicService = logicService;
         this.ahpService = ahpService;
         this.chartService = chartService;
         this.constantsService = constantsService;
+        this.validateService = validateService;
+        this.authenticationService = authenticationService;
         this.criteriaPairwise = [];
         this.alternativesPairwise = [];
+        this.criteriaComparisons = [];
+        this.alternativesComparisons = [[]];
         this.goalMatrix = [];
         this.goalMatrixReady = false;
+        this.vector = [];
         this.diagramLabels = [];
     }
     PrincipalComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.project = this.projectHandlingService.getLoadedProject();
+        this.project.evaluators.forEach(function (evaluator) {
+            _this.getEvaluatorData(evaluator);
+        });
+        if (this.project.imMaster) {
+            this.criteriaComparisons = this.project.criteriaComparisons;
+            this.alternativesComparisons = this.project.alternativesComparisons;
+        }
+        else {
+            var userId = JSON.parse(localStorage.getItem('user')).id;
+            for (var _i = 0, _a = this.project.evaluators; _i < _a.length; _i++) {
+                var evaluator = _a[_i];
+                if (evaluator._id == userId) {
+                    this.criteriaComparisons = evaluator.criteriaComparisons;
+                    this.alternativesComparisons = evaluator.alternativesComparisons;
+                    if (this.criteriaComparisons.length == 0) {
+                        for (var i = 0; i < this.project.criteriaComparisons.length; i++) {
+                            this.criteriaComparisons.push(this.constantsService.getSliderInitialvalue());
+                        }
+                        for (var i = 0; i < this.project.criteria.length; i++) {
+                            this.alternativesComparisons.push([]);
+                            for (var j = 0; j < this.project.alternativesComparisons[i].length; j++)
+                                this.alternativesComparisons[i].push(this.constantsService.getSliderInitialvalue());
+                        }
+                    }
+                }
+            }
+        }
         this.stage = new __WEBPACK_IMPORTED_MODULE_2_createjs_module__["Stage"]("diagram");
         this.diagram = new __WEBPACK_IMPORTED_MODULE_2_createjs_module__["Shape"]();
         this.stage.addChild(this.diagram);
@@ -562,6 +602,32 @@ var PrincipalComponent = (function () {
         this.criteriaPairwise = this.logicService.getCombinations(this.project.criteria);
         this.alternativesPairwise = this.logicService.getCombinations(this.project.alternatives);
         this.drawDiagram(this.canvas.nativeElement.scrollWidth, this.canvas.nativeElement.scrollHeight);
+    };
+    PrincipalComponent.prototype.onSearchEvaluator = function (evaluator) {
+        if (this.validateService.validateEmail(evaluator.email)) {
+            this.authenticationService.searchUser(evaluator).subscribe(function (data) {
+                if (data.success) {
+                    console.log("usuario encontrado");
+                    evaluator.name = data.user.name;
+                    evaluator._id = data.user.id;
+                }
+                else {
+                    console.log("el usuario no existe");
+                }
+            });
+        }
+    };
+    PrincipalComponent.prototype.getEvaluatorData = function (evaluator) {
+        this.authenticationService.getUserData(evaluator).subscribe(function (data) {
+            if (data.success) {
+                console.log("usuario encontrado");
+                evaluator.name = data.user.name;
+                evaluator.email = data.user.email;
+            }
+            else {
+                console.log("el usuario no existe");
+            }
+        });
     };
     PrincipalComponent.prototype.drawDiagram = function (width, height) {
         var objectiveWidth = this.constantsService.getObjectiveWidth();
@@ -629,11 +695,37 @@ var PrincipalComponent = (function () {
     };
     // AHP -----------------------------------------------------------------------
     PrincipalComponent.prototype.onCalculateDecision = function () {
+        var _this = this;
         var criteriaPriorities = [];
         var prioritiesMatrix = [];
-        var matrices = this.ahpService.calculateDecision(this.project.alternatives.length, this.project.criteria.length, this.project.alternativesComparisons, this.project.criteriaComparisons);
+        var matrices = this.ahpService.calculateDecision(this.project.alternatives.length, this.project.criteria.length, this.alternativesComparisons, this.criteriaComparisons);
         prioritiesMatrix = matrices.prioritiesMatrix;
         criteriaPriorities = matrices.criteriaPriorities;
+        if (this.project.imMaster) {
+            var cube_1 = [];
+            cube_1.push(matrices);
+            this.project.evaluators.forEach(function (evaluator) {
+                cube_1.push(_this.ahpService.calculateDecision(_this.project.alternatives.length, _this.project.criteria.length, evaluator.alternativesComparisons, evaluator.criteriaComparisons));
+            });
+            var goalCube_1 = [];
+            cube_1.forEach(function (element) {
+                goalCube_1.push(_this.ahpService.getGoalMatrix(element.prioritiesMatrix));
+            });
+            var finalVector_1 = [];
+            for (var i = 0; i < this.project.alternatives.length; i++) {
+                finalVector_1[i] = 0;
+            }
+            goalCube_1.forEach(function (matrix) {
+                for (var i = 0; i < matrix.length; i++) {
+                    finalVector_1[i] += matrix[i][matrix[i].length - 1];
+                }
+            });
+            for (var i = 0; i < this.project.alternatives.length; i++) {
+                finalVector_1[i] /= this.project.evaluators.length + 1;
+            }
+            console.log(finalVector_1);
+            this.vector = finalVector_1;
+        }
         this.goalMatrix = this.ahpService.getGoalMatrix(prioritiesMatrix);
         this.goalMatrixReady = true;
         this.chartService.drawNodesChart(document.getElementById('nodesChartDisplay'), this.logicService.prepareNodesChartData(this.project.name, this.project.criteria, this.project.alternatives, criteriaPriorities, prioritiesMatrix));
@@ -643,6 +735,15 @@ var PrincipalComponent = (function () {
     // Project -------------------------------------------------------------------
     PrincipalComponent.prototype.onSaveProject = function () {
         var _this = this;
+        if (!this.project.imMaster) {
+            var userId = JSON.parse(localStorage.getItem('user')).id;
+            for (var _i = 0, _a = this.project.evaluators; _i < _a.length; _i++) {
+                var evaluator = _a[_i];
+                if (evaluator._id == userId) {
+                    evaluator.status = true;
+                }
+            }
+        }
         this.projectHandlingService.saveProject(this.project).subscribe(function (data) {
             if (data.success) {
                 _this.flashMessagesService.show(data.msg, { cssClass: 'alert-success', timeout: 3000 });
@@ -670,10 +771,10 @@ PrincipalComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/components/principal/principal.component.html"),
         styles: [__webpack_require__("../../../../../src/app/components/principal/principal.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages__["FlashMessagesService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages__["FlashMessagesService"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__services_project_handling_service__["a" /* ProjectHandlingService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_project_handling_service__["a" /* ProjectHandlingService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__services_logic_service__["a" /* LogicService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_logic_service__["a" /* LogicService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_5__services_ahp_service__["a" /* AHPService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_ahp_service__["a" /* AHPService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_6__services_chart_service__["a" /* ChartService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__services_chart_service__["a" /* ChartService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_7__services_constants_service__["a" /* ConstantsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__services_constants_service__["a" /* ConstantsService */]) === "function" && _g || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages__["FlashMessagesService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angular2_flash_messages__["FlashMessagesService"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__services_project_handling_service__["a" /* ProjectHandlingService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_project_handling_service__["a" /* ProjectHandlingService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__services_logic_service__["a" /* LogicService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_logic_service__["a" /* LogicService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_5__services_ahp_service__["a" /* AHPService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_ahp_service__["a" /* AHPService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_6__services_chart_service__["a" /* ChartService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__services_chart_service__["a" /* ChartService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_7__services_constants_service__["a" /* ConstantsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__services_constants_service__["a" /* ConstantsService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_8__services_validate_service__["a" /* ValidateService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__services_validate_service__["a" /* ValidateService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_9__services_authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_9__services_authentication_service__["a" /* AuthenticationService */]) === "function" && _j || Object])
 ], PrincipalComponent);
 
-var _a, _b, _c, _d, _e, _f, _g;
+var _a, _b, _c, _d, _e, _f, _g, _h, _j;
 //# sourceMappingURL=principal.component.js.map
 
 /***/ }),
@@ -699,7 +800,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/principal/side-menu/side-menu.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-default\"> \n  <div class=\"navbar-header\">\n    <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#opciones\">\n      <span class=\"icon-bar\"></span>\n      <span class=\"icon-bar\"></span>\n      <span class=\"icon-bar\"></span>\n    </button>\n    <span class=\"navbar-brand\" style=\"text-align: center\">Opciones</span>\n  </div>      \n  <div class=\"collapse navbar-collapse\" id=\"opciones\">\n    <div class=\"btn-group-vertical btn-block\" role=\"group\">\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#criterios\">\n        Criterios <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"criterios\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\"  (click)=\"addCriterion()\"><a>Nuevo <span class=\"glyphicon glyphicon-plus\"></span></a></li>\n        <li role=\"presentation\" *ngFor=\"let criterion of project.criteria\">\n            <a href=\"principal#Criterion={{criterion.name}}\">{{criterion.name}} <span class=\"glyphicon glyphicon-remove remove\" (click)=\"removeCriterion(criterion)\" ></span></a>\n        </li>\n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#alternativas\">\n        Alternativas <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"alternativas\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\" (click)=\"addAlternative()\" ><a>Nuevo <span class=\"glyphicon glyphicon-plus\"></span></a></li>\n        <li role=\"presentation\" *ngFor=\"let alternative of project.alternatives\">\n            <a href=\"principal#Alternative={{alternative.name}}\">{{alternative.name}} <span class=\"glyphicon glyphicon-remove remove\" (click)=\"removeAlternative(alternative)\" ></span></a>\n        </li>\n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#evaluadores\">\n        Evaluadores <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"evaluadores\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\" (click)=\"addEvaluator()\" ><a>Nuevo <span class=\"glyphicon glyphicon-plus\"></span></a></li>\n        <li role=\"presentation\" *ngFor=\"let evaluator of evaluators\">\n            <a>{{evaluator}} <span class=\"glyphicon glyphicon-remove remove\" (click)=\"removeAlternative(alternative)\" ></span></a>\n        </li>\n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#prioridades\">\n        Prioridades <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"prioridades\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\" *ngFor=\"let criterionPairwise of criteriaPairwise\">\n            <a href=\"principal#Priority={{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}\">\n              {{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}</a>\n        </li>\n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#evaluacion\">\n        Contexto de Evaluación <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"evaluacion\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\" *ngFor=\"let criterion of project.criteria\">\n          <a href=\"principal#CriteriaContext={{criterion.name}}\">{{criterion.name}}</a>\n        </li>          \n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#resultados\">\n        Resultados <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"resultados\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\" (click)=\"onResultsClick()\"><a>Calcular</a></li>\n        <li role=\"presentation\"><a href=\"principal#nodesChart\">Gráfica de Nodos</a></li>\n        <li role=\"presentation\"><a href=\"principal#criteriaChart\">Gráfica de Criterios</a></li>\n        <li role=\"presentation\"><a href=\"principal#table\">Matriz de Resultados</a></li>\n        <li role=\"presentation\"><a href=\"principal#chart\">Gráfica de Resultados</a></li>\n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"onSaveClick()\">Guardar</button>\n\n    </div>\n  </div>\n</nav>"
+module.exports = "<nav class=\"navbar navbar-default\"> \n  <div class=\"navbar-header\">\n    <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#opciones\">\n      <span class=\"icon-bar\"></span>\n      <span class=\"icon-bar\"></span>\n      <span class=\"icon-bar\"></span>\n    </button>\n    <span class=\"navbar-brand\" style=\"text-align: center\">Opciones</span>\n  </div>      \n  <div class=\"collapse navbar-collapse\" id=\"opciones\">\n    <div class=\"btn-group-vertical btn-block\" role=\"group\">\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#criterios\">\n        Criterios <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"criterios\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\"  (click)=\"addCriterion()\"><a>Nuevo <span class=\"glyphicon glyphicon-plus\"></span></a></li>\n        <li role=\"presentation\" *ngFor=\"let criterion of project.criteria\">\n            <a href=\"principal#Criterion={{criterion.name}}\">{{criterion.name}} <span class=\"glyphicon glyphicon-remove remove\" (click)=\"removeCriterion(criterion)\" ></span></a>\n        </li>\n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#alternativas\">\n        Alternativas <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"alternativas\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\" (click)=\"addAlternative()\" ><a>Nuevo <span class=\"glyphicon glyphicon-plus\"></span></a></li>\n        <li role=\"presentation\" *ngFor=\"let alternative of project.alternatives\">\n            <a href=\"principal#Alternative={{alternative.name}}\">{{alternative.name}} <span class=\"glyphicon glyphicon-remove remove\" (click)=\"removeAlternative(alternative)\" ></span></a>\n        </li>\n      </ul>\n\n      <div *ngIf=\"project.imMaster\">\n        <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#evaluators\">\n          Evaluadores <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n        <ul id=\"evaluators\" class=\"nav nav-pills nav-stacked collapse\">\n          <li role=\"presentation\" (click)=\"addEvaluator()\" ><a>Nuevo <span class=\"glyphicon glyphicon-plus\"></span></a></li>\n          <li role=\"presentation\" *ngFor=\"let evaluator of project.evaluators\">\n              <a href=\"principal#Evaluator={{evaluator.email}}\">{{evaluator.name}} <span class=\"glyphicon glyphicon-remove remove\" (click)=\"removeEvaluator(evaluator)\" ></span></a>\n          </li>\n        </ul>\n      </div>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#prioridades\">\n        Prioridades <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"prioridades\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\" *ngFor=\"let criterionPairwise of criteriaPairwise\">\n            <a href=\"principal#Priority={{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}\">\n              {{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}</a>\n        </li>\n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#evaluacion\">\n        Contexto de Evaluación <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"evaluacion\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\" *ngFor=\"let criterion of project.criteria\">\n          <a href=\"principal#CriteriaContext={{criterion.name}}\">{{criterion.name}}</a>\n        </li>          \n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" data-toggle=\"collapse\" data-target=\"#resultados\">\n        Resultados <span class=\"glyphicon glyphicon-triangle-bottom\"></span></button>\n      <ul id=\"resultados\" class=\"nav nav-pills nav-stacked collapse\">\n        <li role=\"presentation\" (click)=\"onResultsClick()\"><a>Calcular</a></li>\n        <li role=\"presentation\"><a href=\"principal#nodesChart\">Gráfica de Nodos</a></li>\n        <li role=\"presentation\"><a href=\"principal#criteriaChart\">Gráfica de Criterios</a></li>\n        <li role=\"presentation\"><a href=\"principal#table\">Matriz de Resultados</a></li>\n        <li role=\"presentation\"><a href=\"principal#chart\">Gráfica de Resultados</a></li>\n      </ul>\n\n      <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"onSaveClick()\">Guardar</button>\n\n    </div>\n  </div>\n</nav>"
 
 /***/ }),
 
@@ -735,46 +836,58 @@ var SideMenuComponent = (function () {
         this.evaluators = [];
     }
     SideMenuComponent.prototype.addAlternative = function () {
-        var index = this.project.alternatives.length + 1;
-        this.project.alternatives.push({ name: 'Alternativa # ' + index, description: '' });
-        for (var i = 0; i < this.project.criteria.length; i++) {
-            this.project.alternativesComparisons[i] = this.logicService.addComparisons(this.project.alternativesComparisons[i], this.project.alternatives.length);
+        if (this.project.imMaster) {
+            var index = this.project.alternatives.length + 1;
+            this.project.alternatives.push({ name: 'Alternativa # ' + index, description: '' });
+            for (var i = 0; i < this.project.criteria.length; i++) {
+                this.project.alternativesComparisons[i] = this.logicService.addComparisons(this.project.alternativesComparisons[i], this.project.alternatives.length);
+            }
+            this.notifyNodeChanges.emit();
         }
-        this.notifyNodeChanges.emit();
     };
     SideMenuComponent.prototype.removeAlternative = function (alternative) {
-        var indexAlternative = this.project.alternatives.indexOf(alternative);
-        this.project.alternatives.splice(this.project.alternatives.indexOf(alternative), 1);
-        for (var i = 0; i < this.project.criteria.length; i++) {
-            this.project.alternativesComparisons[i] = this.logicService.removeComparisons(indexAlternative, this.project.alternativesComparisons[i], this.project.alternatives.length);
+        if (this.project.imMaster) {
+            var indexAlternative = this.project.alternatives.indexOf(alternative);
+            this.project.alternatives.splice(this.project.alternatives.indexOf(alternative), 1);
+            for (var i = 0; i < this.project.criteria.length; i++) {
+                this.project.alternativesComparisons[i] = this.logicService.removeComparisons(indexAlternative, this.project.alternativesComparisons[i], this.project.alternatives.length);
+            }
+            this.notifyNodeChanges.emit();
         }
-        this.notifyNodeChanges.emit();
     };
     SideMenuComponent.prototype.addCriterion = function () {
-        var index = this.project.criteria.length + 1;
-        this.project.criteria.push({ name: 'Criterio # ' + index, description: '' });
-        this.project.alternativesComparisons.push([]);
-        for (var j = 0; j < this.alternativesPairwise.length; j++) {
-            this.project.alternativesComparisons[index - 1].push(this.constantsService.getSliderInitialvalue());
+        if (this.project.imMaster) {
+            var index = this.project.criteria.length + 1;
+            this.project.criteria.push({ name: 'Criterio # ' + index, description: '' });
+            this.project.alternativesComparisons.push([]);
+            for (var j = 0; j < this.alternativesPairwise.length; j++) {
+                this.project.alternativesComparisons[index - 1].push(this.constantsService.getSliderInitialvalue());
+            }
+            this.project.criteriaComparisons = this.logicService.addComparisons(this.project.criteriaComparisons, this.project.criteria.length);
+            this.notifyNodeChanges.emit();
         }
-        this.project.criteriaComparisons = this.logicService.addComparisons(this.project.criteriaComparisons, this.project.criteria.length);
-        this.notifyNodeChanges.emit();
     };
     SideMenuComponent.prototype.removeCriterion = function (criterion) {
-        var indexCriterion = this.project.criteria.indexOf(criterion);
-        this.project.criteria.splice(indexCriterion, 1);
-        this.project.alternativesComparisons.splice(indexCriterion, 1);
-        this.project.criteriaComparisons = this.logicService.removeComparisons(indexCriterion, this.project.criteriaComparisons, this.project.criteria.length);
-        this.notifyNodeChanges.emit();
+        if (this.project.imMaster) {
+            var indexCriterion = this.project.criteria.indexOf(criterion);
+            this.project.criteria.splice(indexCriterion, 1);
+            this.project.alternativesComparisons.splice(indexCriterion, 1);
+            this.project.criteriaComparisons = this.logicService.removeComparisons(indexCriterion, this.project.criteriaComparisons, this.project.criteria.length);
+            this.notifyNodeChanges.emit();
+        }
+    };
+    SideMenuComponent.prototype.addEvaluator = function () {
+        this.project.evaluators.push({ email: 'evaluador' + (this.project.evaluators.length + 1) + '@mail.com' });
+    };
+    SideMenuComponent.prototype.removeEvaluator = function (evaluator) {
+        var indexEvaluator = this.project.evaluators.indexOf(evaluator);
+        this.project.evaluators.splice(indexEvaluator, 1);
     };
     SideMenuComponent.prototype.onResultsClick = function () {
         this.notifyCalculateDecision.emit();
     };
     SideMenuComponent.prototype.onSaveClick = function () {
         this.notifySaveProject.emit();
-    };
-    SideMenuComponent.prototype.addEvaluator = function () {
-        this.evaluators[this.evaluators.length] = 'Evaluador #' + (this.evaluators.length + 1);
     };
     return SideMenuComponent;
 }());
@@ -1494,6 +1607,18 @@ var AuthenticationService = (function () {
         this.authToken = null;
         this.user = null;
         localStorage.clear();
+    };
+    AuthenticationService.prototype.searchUser = function (user) {
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post(this.routeStart + 'users/search', user, { headers: headers })
+            .map(function (res) { return res.json(); });
+    };
+    AuthenticationService.prototype.getUserData = function (user) {
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post(this.routeStart + 'users/getdata', user, { headers: headers })
+            .map(function (res) { return res.json(); });
     };
     return AuthenticationService;
 }());
