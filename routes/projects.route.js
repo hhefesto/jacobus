@@ -55,6 +55,31 @@ router.post('/save', (req, res, next) => {
   })
 });
 
+router.post('/update', (req, res, next) => {
+  Project.getProjectById(req.body.projectId, (err, project) => {
+    if(err) {
+        res.json({success: false, msg: 'Falla al actualizar proyecto'});
+    }
+    else {
+      for (let evaluator of project.evaluators) {
+        if(evaluator._id == req.body.evaluatorId){
+          evaluator.criteriaComparisons = req.body.criteriaComparisons;
+          evaluator.alternativesComparisons = req.body.alternativesComparisons;
+          break;
+        }
+      }
+      Project.saveProject(req.body.projectId, project, (err) => {
+        if(err) {
+          res.json({success: false, msg: 'Falla al actualizar el proyecto'});
+        }
+        else {
+          res.json({success: true, msg: 'Proyecto actualizado correctamente'});
+        }
+      })  
+    }
+  });
+});
+
 router.post('/delete', (req, res, next) => {
   Project.delete(req.body.projectId, err => {
     if(err) {
