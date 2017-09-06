@@ -1902,7 +1902,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 // true = Deploy, false = Development
-var deploy = false;
+var deploy = true;
 var DeployService = (function () {
     function DeployService() {
     }
