@@ -65,6 +65,7 @@ router.post('/update', (req, res, next) => {
         if(evaluator._id == req.body.evaluatorId){
           evaluator.criteriaComparisons = req.body.criteriaComparisons;
           evaluator.alternativesComparisons = req.body.alternativesComparisons;
+          evaluator.status = true;
           break;
         }
       }
