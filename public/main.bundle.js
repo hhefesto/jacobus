@@ -482,7 +482,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#workspace {\n  padding-left: 245px;\n  padding-right: 5px;\n  margin-top: -50px\n}\n\ntextarea {\n  resize: none;\n}\n\n#diagram {\n  width: 100%\n}\n\n@media screen and (max-width:767px) {\n  #workspace {\n    padding-left: 5px;\n    padding-right: 0px;\n    margin-top: 0px\n  }\n}\n\n.form-inline > * {\n   margin:10px 5px;\n}", ""]);
+exports.push([module.i, "#workspace {\n  padding-left: 245px;\n  padding-right: 5px;\n  margin-top: -50px\n}\n\ntextarea {\n  resize: none;\n}\n\n#diagram {\n  width: 100%\n}\n\n@media screen and (max-width:767px) {\n  #workspace {\n    padding-left: 5px;\n    padding-right: 0px;\n    margin-top: 0px\n  }\n}\n\n.form-inline > * {\n   margin:10px 5px;\n}\n\nth {\n  text-align: center;\n}", ""]);
 
 // exports
 
@@ -495,7 +495,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/principal/principal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-side-menu [project]=\"project\"\n               [criteriaPairwise]=\"criteriaPairwise\"\n               [alternativesPairwise]=\"alternativesPairwise\"\n               (notifyNodeChanges)=\"onNodeChanges($event)\"\n               (notifyCalculateDecision)=\"onCalculateDecision($event)\"\n               (notifySaveProject)=\"onSaveProject($event)\"></app-side-menu>\n\n<div id=\"workspace\">\n  <div class=\"page-header text-center\">\n    <h1>Objetivo: {{project.name}}</h1>           \n  </div>\n  <hr>\n\n  <div class=\"page-header text-center\">\n    <h1>Criterios</h1>      \n  </div>\n  <div *ngFor=\"let criterion of project.criteria\">\n    <hr id=\"Criterion={{criterion.name}}\">\n    <div class=\"form-group\">\n      <label>Nombre:</label>\n      <div *ngIf=\"project.imMaster; then enabledEditCriteria else disabledEditCriteria\"></div>\n      <ng-template #enabledEditCriteria>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Nombre del Criterio\" [(ngModel)]=\"criterion.name\">\n      </ng-template>\n      <ng-template #disabledEditCriteria>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Nombre del Criterio\" [(ngModel)]=\"criterion.name\" disabled>\n      </ng-template>\n    </div>\n    <br>\n    <div class=\"form-group\">\n      <label>Descripción</label>\n      <div *ngIf=\"project.imMaster; then enabledEditCriteriaDescription else disabledEditCriteriaDescription\"></div>\n      <ng-template #enabledEditCriteriaDescription>\n        <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"criterion.description\"></textarea>\n      </ng-template>\n      <ng-template #disabledEditCriteriaDescription>\n        <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"criterion.description\" disabled></textarea>\n      </ng-template>\n    </div>        \n    <hr>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Alternativas</h1>           \n  </div>\n  <div *ngFor=\"let alternative of project.alternatives\">\n    <hr id=\"Alternative={{alternative.name}}\">\n    <div class=\"form-group\">\n      <label>Nombre:</label>\n      <div *ngIf=\"project.imMaster; then enabledEditAlternatives else disabledEditAlternatives\"></div>\n      <ng-template #enabledEditAlternatives>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la Alternativa\" [(ngModel)]=\"alternative.name\">\n      </ng-template>\n      <ng-template #disabledEditAlternatives>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la Alternativa\" [(ngModel)]=\"alternative.name\" disabled>\n      </ng-template>\n    </div>\n    <br>\n    <div class=\"form-group\">\n      <label>Descripción</label>\n      <div *ngIf=\"project.imMaster; then enabledEditAlternativesDescription else disabledEditAlternativesDescription\"></div>\n      <ng-template #enabledEditAlternativesDescription>\n        <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"alternative.description\"></textarea>\n      </ng-template>\n      <ng-template #disabledEditAlternativesDescription>\n        <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"alternative.description\" disabled></textarea>\n      </ng-template>\n\n    </div>\n    <hr>\n  </div>\n\n  <div *ngIf=\"project.imMaster\">\n    <div class=\"page-header text-center\">\n      <h1>Evaluadores</h1>           \n    </div>\n    <div *ngFor=\"let evaluator of project.evaluators; let i = index\">\n      <hr id=\"Evaluator={{evaluator.email}}\">\n      <form class=\"form-inline\" (submit)=\"onSearchEvaluator(evaluator)\">\n        <div class=\"form-group\">\n          <label>Email</label>\n          <input type=\"text\" [(ngModel)]=\"evaluator.email\" name='email' class=\"form-control\" placeholder=\"evaluador@mail.com\">\n          <button type=\"submit\" class=\"btn btn-success\">Buscar</button>\n        </div>\n        <div class=\"form-group\">\n          <label>Nombre:</label>\n          <input type=\"text\" [(ngModel)]=\"evaluator.name\" name='name' class=\"form-control\" placeholder=\"Nombre del evaluador\" disabled>\n        </div>\n      </form>\n      <div *ngIf=\"evaluator.status then evaluatorResults else notResultsYet\"></div>\n      <ng-template #evaluatorResults>\n        <div id=\"chartDisplay{{i}}\"></div>\n      </ng-template>\n      <ng-template #notResultsYet>\n        <label>No ha realizado la evaluación</label>\n      </ng-template>\n      \n    </div>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Diagrama de jerarquías</h1>           \n  </div>\n  <canvas id=\"diagram\" #diagram></canvas>\n\n  <div class=\"page-header text-center\">\n    <h1>Prioridades</h1>      \n  </div>\n  <div *ngFor=\"let criterionPairwise of criteriaPairwise; let i = index\">\n    <hr id=\"Priority={{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}\">\n    <h3 style=\"text-align:center;\">{{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}</h3>\n    <app-slider [(comparison)]=\"criteriaComparisons[i]\" ></app-slider>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Evaluación</h1>      \n  </div>\n  <div *ngFor=\"let criterion of project.criteria; let i = index\">\n    <hr id=\"CriteriaContext={{criterion.name}}\">\n    <h2>Evaluación en el contexto de: {{criterion.name}}</h2>\n    <div *ngFor=\"let alternativePairwise of alternativesPairwise; let j = index\">\n      <h3 style=\"text-align:center;\">{{project.alternatives[alternativePairwise.indexItem1].name}} vs {{project.alternatives[alternativePairwise.indexItem2].name}}</h3>\n      <app-slider [(comparison)]=\"alternativesComparisons[i][j]\"></app-slider>\n    </div>\n  </div>\n\n  \n  <div *ngIf=\"goalMatrixReady\" class=\"page-header text-center\" id=\"Results\">\n    <h1>Resultados</h1>      \n    \n    <h3 style=\"text-align:center;\" id=\"nodesChart\">Gráfica de relaciones entre los nodos</h3>\n    <div id=\"nodesChartDisplay\" style=\"height: 400px;\"></div>\n    <br><br>\n    \n    <div class=\"container-fluid\">\n      <div class=\"row\">\n        <div class=\"col-sm-8\">\n          <h3 style=\"text-align:center;\" id=\"criteriaChart\">Gráfica de criterios</h3>\n          <div id=\"criteriaChartDisplay\"></div>  \n        </div>\n        <div class=\"col-sm-4\">\n          <h3 style=\"text-align:center;\">Vector de Criterios</h3>\n          <table class=\"table table-hover table-condensed table-bordered\">\n            <thead>\n              <tr>\n                <th>Criterios</th>\n                <th>Preferencia</th>\n              </tr>\n            </thead>\n            <tbody>\n              <tr *ngFor=\"let criterion of project.criteria; let i = index\">\n                <td>{{criterion.name}}</td>\n                <td>{{(criteriaPriorities[i]*100).toFixed(1)}} %</td>\n              </tr>\n            </tbody>\n          </table>      \n        </div>\n      </div>\n    </div>\n  \n    <h3 style=\"text-align:center;\" id=\"table\">Matriz de resultados</h3>\n    <table class=\"table table-hover table-condensed table-bordered\">\n      <thead>\n        <tr>\n          <th>Alternativas</th>\n          <th *ngFor=\"let criterion of project.criteria\">{{criterion.name}}</th>\n          <th>Objetivo</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr *ngFor=\"let alternative of project.alternatives; let i = index\">\n          <td>{{alternative.name}}</td>\n          <td *ngFor=\"let criterion of project.criteria; let j = index\">\n            {{(goalMatrix[i][j]*100).toFixed(1)}} %\n          </td>\n          <td>{{(goalMatrix[i][goalMatrix[i].length-1]*100).toFixed(1)}} %</td>\n        </tr>\n      </tbody>\n    </table>\n    <br><br>\n  \n    <h3 style=\"text-align:center;\" id=\"chart\">Gráfica de resultados</h3>\n    <div id=\"chartDisplay\"></div>\n    <br><br>\n  \n    <h3 style=\"text-align:center;\">Matriz global de criterios</h3>\n    <table class=\"table table-hover table-condensed table-bordered\">\n      <thead>\n        <tr>\n          <th>Criterios</th>\n          <th *ngFor=\"let evaluator of evaluatorsNames\">{{evaluator.name}}</th>\n          <th>Prioridad</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr *ngFor=\"let criterion of project.criteria; let i = index\">\n          <td>{{criterion.name}}</td>\n          <td *ngFor=\"let evaluator of evaluatorsNames; let j = index\">\n            {{(globalCriteriaMatrix[i][j]*100).toFixed(1)}} %\n          </td>\n          <td>{{(globalCriteriaMatrix[i][globalCriteriaMatrix[i].length-1]*100).toFixed(1)}} %</td>\n        </tr>\n      </tbody>\n    </table>\n    <br><br>\n  \n    <h3 style=\"text-align:center;\" id=\"chart\">Evaluación global de Criterios</h3>\n    <div id=\"globalCriteriaChartDisplay\"></div>\n    <br><br>\n  \n    <div class=\"container-fluid\">\n      <div class=\"row\">\n        <div class=\"col-sm-8\">\n          <h3 style=\"text-align:center;\">Decision Global</h3>\n          <div id=\"globalChartDisplay\"></div>\n        </div>\n        <div class=\"col-sm-4\">\n          <h3 style=\"text-align:center;\">Vector de Resultados</h3>\n          <table class=\"table table-hover table-condensed table-bordered\">\n            <thead>\n              <tr>\n                <th>Alternativas</th>\n                <th>Preferencia</th>\n              </tr>\n            </thead>\n            <tbody>\n              <tr *ngFor=\"let alternative of project.alternatives; let i = index\">\n                <td>{{alternative.name}}</td>\n                <td>{{(globalDecisionVector[i]*100).toFixed(1)}} %</td>\n              </tr>\n            </tbody>\n          </table>      \n        </div>\n      </div>\n    </div>\n\n  </div>\n</div>\n\n"
+module.exports = "<app-side-menu [project]=\"project\"\n               [criteriaPairwise]=\"criteriaPairwise\"\n               [alternativesPairwise]=\"alternativesPairwise\"\n               (notifyNodeChanges)=\"onNodeChanges($event)\"\n               (notifyCalculateDecision)=\"onCalculateDecision($event)\"\n               (notifySaveProject)=\"onSaveProject($event)\"></app-side-menu>\n\n<div id=\"workspace\">\n  <div class=\"page-header text-center\">\n    <h1>Objetivo: {{project.name}}</h1>           \n  </div>\n  <hr>\n\n  <div class=\"page-header text-center\">\n    <h1>Criterios</h1>      \n  </div>\n  <div *ngFor=\"let criterion of project.criteria\">\n    <hr id=\"Criterion={{criterion.name}}\">\n    <div class=\"form-group\">\n      <label>Nombre:</label>\n      <div *ngIf=\"project.imMaster; then enabledEditCriteria else disabledEditCriteria\"></div>\n      <ng-template #enabledEditCriteria>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Nombre del Criterio\" [(ngModel)]=\"criterion.name\">\n      </ng-template>\n      <ng-template #disabledEditCriteria>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Nombre del Criterio\" [(ngModel)]=\"criterion.name\" disabled>\n      </ng-template>\n    </div>\n    <br>\n    <div class=\"form-group\">\n      <label>Descripción</label>\n      <div *ngIf=\"project.imMaster; then enabledEditCriteriaDescription else disabledEditCriteriaDescription\"></div>\n      <ng-template #enabledEditCriteriaDescription>\n        <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"criterion.description\"></textarea>\n      </ng-template>\n      <ng-template #disabledEditCriteriaDescription>\n        <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"criterion.description\" disabled></textarea>\n      </ng-template>\n    </div>        \n    <hr>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Alternativas</h1>           \n  </div>\n  <div *ngFor=\"let alternative of project.alternatives\">\n    <hr id=\"Alternative={{alternative.name}}\">\n    <div class=\"form-group\">\n      <label>Nombre:</label>\n      <div *ngIf=\"project.imMaster; then enabledEditAlternatives else disabledEditAlternatives\"></div>\n      <ng-template #enabledEditAlternatives>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la Alternativa\" [(ngModel)]=\"alternative.name\">\n      </ng-template>\n      <ng-template #disabledEditAlternatives>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la Alternativa\" [(ngModel)]=\"alternative.name\" disabled>\n      </ng-template>\n    </div>\n    <br>\n    <div class=\"form-group\">\n      <label>Descripción</label>\n      <div *ngIf=\"project.imMaster; then enabledEditAlternativesDescription else disabledEditAlternativesDescription\"></div>\n      <ng-template #enabledEditAlternativesDescription>\n        <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"alternative.description\"></textarea>\n      </ng-template>\n      <ng-template #disabledEditAlternativesDescription>\n        <textarea class=\"form-control\" rows=\"2\" [(ngModel)]=\"alternative.description\" disabled></textarea>\n      </ng-template>\n\n    </div>\n    <hr>\n  </div>\n\n  <div *ngIf=\"project.imMaster\">\n    <div class=\"page-header text-center\">\n      <h1>Evaluadores</h1>           \n    </div>\n    <div *ngFor=\"let evaluator of project.evaluators; let i = index\">\n      <hr id=\"Evaluator={{evaluator.email}}\">\n      <form class=\"form-inline\" (submit)=\"onSearchEvaluator(evaluator)\">\n        <div class=\"form-group\">\n          <label>Email</label>\n          <input type=\"text\" [(ngModel)]=\"evaluator.email\" name='email' class=\"form-control\" placeholder=\"evaluador@mail.com\">\n          <button type=\"submit\" class=\"btn btn-success\">Buscar</button>\n        </div>\n        <div class=\"form-group\">\n          <label>Nombre:</label>\n          <input type=\"text\" [(ngModel)]=\"evaluator.name\" name='name' class=\"form-control\" placeholder=\"Nombre del evaluador\" disabled>\n        </div>\n      </form>\n      <div *ngIf=\"evaluator.status then evaluatorResults else notResultsYet\"></div>\n      <ng-template #evaluatorResults>\n        <div id=\"chartDisplay{{i}}\"></div>\n      </ng-template>\n      <ng-template #notResultsYet>\n        <label>No ha realizado la evaluación</label>\n      </ng-template>\n      \n    </div>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Diagrama de jerarquías</h1>           \n  </div>\n  <canvas id=\"diagram\" #diagram></canvas>\n\n  <div class=\"page-header text-center\">\n    <h1>Prioridades</h1>      \n  </div>\n  <div *ngFor=\"let criterionPairwise of criteriaPairwise; let i = index\">\n    <hr id=\"Priority={{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}\">\n    <h3 style=\"text-align:center;\">{{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}</h3>\n    <app-slider [(comparison)]=\"criteriaComparisons[i]\" ></app-slider>\n  </div>\n\n  <div class=\"page-header text-center\">\n    <h1>Evaluación</h1>      \n  </div>\n  <div *ngFor=\"let criterion of project.criteria; let i = index\">\n    <hr id=\"CriteriaContext={{criterion.name}}\">\n    <h2>Evaluación en el contexto de: {{criterion.name}}</h2>\n    <div *ngFor=\"let alternativePairwise of alternativesPairwise; let j = index\">\n      <h3 style=\"text-align:center;\">{{project.alternatives[alternativePairwise.indexItem1].name}} vs {{project.alternatives[alternativePairwise.indexItem2].name}}</h3>\n      <app-slider [(comparison)]=\"alternativesComparisons[i][j]\"></app-slider>\n    </div>\n  </div>\n\n  \n  <div *ngIf=\"goalMatrixReady\" class=\"page-header text-center\" id=\"Results\">\n    <h1>Resultados</h1>      \n    \n    <h3 style=\"text-align:center;\" id=\"nodesChart\">Gráfica de relaciones entre los nodos</h3>\n    <div id=\"nodesChartDisplay\" style=\"height: 400px;\"></div>\n    <br><br>\n\n    <h3 style=\"text-align:center;\" id=\"table\">Tasa de consistencia</h3>\n    <table class=\"table table-hover table-condensed table-bordered\">\n      <thead style=\"text-align:center\">\n        <tr>\n          <th>Evaluación</th>\n          <th>CR</th>\n          <th>Consistencia</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr *ngFor=\"let criterion of project.criteria; let i = index\">\n          <td>Alternativas en el contexto de {{criterion.name}}</td>\n          <td>{{alternativesCRVector[i].toFixed(1)}} %</td>\n          <td>{{alternativesCRStatus[i]}}</td>\n        </tr>\n        <tr>\n          <td>Comparación de criterios</td>\n          <td>{{criteriaCR.toFixed(1)}} %</td>\n          <td>{{criteriaCRStatus}}</td>\n        </tr>\n      </tbody>\n    </table>\n    \n    <div class=\"container-fluid\">\n      <div class=\"row\">\n        <div class=\"col-sm-8\">\n          <h3 style=\"text-align:center;\" id=\"criteriaChart\">Gráfica de criterios</h3>\n          <div id=\"criteriaChartDisplay\"></div>  \n        </div>\n        <div class=\"col-sm-4\">\n          <h3 style=\"text-align:center;\">Vector de Criterios</h3>\n          <table class=\"table table-hover table-condensed table-bordered\">\n            <thead>\n              <tr>\n                <th>Criterios</th>\n                <th>Preferencia</th>\n              </tr>\n            </thead>\n            <tbody>\n              <tr *ngFor=\"let criterion of project.criteria; let i = index\">\n                <td>{{criterion.name}}</td>\n                <td>{{(criteriaPriorities[i]*100).toFixed(1)}} %</td>\n              </tr>\n            </tbody>\n          </table>      \n        </div>\n      </div>\n    </div>\n  \n    <h3 style=\"text-align:center;\" id=\"table\">Matriz de resultados</h3>\n    <table class=\"table table-hover table-condensed table-bordered\">\n      <thead>\n        <tr>\n          <th>Alternativas</th>\n          <th *ngFor=\"let criterion of project.criteria\">{{criterion.name}}</th>\n          <th>Objetivo</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr *ngFor=\"let alternative of project.alternatives; let i = index\">\n          <td>{{alternative.name}}</td>\n          <td *ngFor=\"let criterion of project.criteria; let j = index\">\n            {{(goalMatrix[i][j]*100).toFixed(1)}} %\n          </td>\n          <td>{{(goalMatrix[i][goalMatrix[i].length-1]*100).toFixed(1)}} %</td>\n        </tr>\n      </tbody>\n    </table>\n    <br><br>\n  \n    <h3 style=\"text-align:center;\" id=\"chart\">Gráfica de resultados</h3>\n    <div id=\"chartDisplay\"></div>\n    <br><br>\n  \n    <h3 style=\"text-align:center;\">Matriz global de criterios</h3>\n    <table class=\"table table-hover table-condensed table-bordered\">\n      <thead>\n        <tr>\n          <th>Criterios</th>\n          <th *ngFor=\"let evaluator of evaluatorsNames\">{{evaluator.name}}</th>\n          <th>Prioridad</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr *ngFor=\"let criterion of project.criteria; let i = index\">\n          <td>{{criterion.name}}</td>\n          <td *ngFor=\"let evaluator of evaluatorsNames; let j = index\">\n            {{(globalCriteriaMatrix[i][j]*100).toFixed(1)}} %\n          </td>\n          <td>{{(globalCriteriaMatrix[i][globalCriteriaMatrix[i].length-1]*100).toFixed(1)}} %</td>\n        </tr>\n      </tbody>\n    </table>\n    <br><br>\n  \n    <h3 style=\"text-align:center;\" id=\"chart\">Evaluación global de Criterios</h3>\n    <div id=\"globalCriteriaChartDisplay\"></div>\n    <br><br>\n  \n    <div class=\"container-fluid\">\n      <div class=\"row\">\n        <div class=\"col-sm-8\">\n          <h3 style=\"text-align:center;\">Decision Global</h3>\n          <div id=\"globalChartDisplay\"></div>\n        </div>\n        <div class=\"col-sm-4\">\n          <h3 style=\"text-align:center;\">Vector de Resultados</h3>\n          <table class=\"table table-hover table-condensed table-bordered\">\n            <thead>\n              <tr>\n                <th>Alternativas</th>\n                <th>Preferencia</th>\n              </tr>\n            </thead>\n            <tbody>\n              <tr *ngFor=\"let alternative of project.alternatives; let i = index\">\n                <td>{{alternative.name}}</td>\n                <td>{{(globalDecisionVector[i]*100).toFixed(1)}} %</td>\n              </tr>\n            </tbody>\n          </table>      \n        </div>\n      </div>\n    </div>\n\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -550,6 +550,9 @@ var PrincipalComponent = (function () {
         this.criteriaComparisons = [];
         this.alternativesComparisons = [[]];
         this.criteriaPriorities = [];
+        this.alternativesCRVector = [];
+        this.alternativesCRStatus = [];
+        this.criteriaCR = 0;
         this.goalMatrix = [];
         this.evaluatorsNames = [];
         this.globalCriteriaMatrix = [];
@@ -571,9 +574,13 @@ var PrincipalComponent = (function () {
                     var criteriaPriorities = [];
                     var prioritiesMatrix_1 = [];
                     var goalMatrix_1 = [];
+                    var alternativesCRVector = void 0;
+                    var criteriaCR = void 0;
                     var matrices = this_1.ahpService.calculateDecision(this_1.project.alternatives.length, this_1.project.criteria.length, this_1.project.evaluators[i].alternativesComparisons, this_1.project.evaluators[i].criteriaComparisons);
                     prioritiesMatrix_1 = matrices.prioritiesMatrix;
                     criteriaPriorities = matrices.criteriaPriorities;
+                    alternativesCRVector = matrices.alternativesCRVector;
+                    criteriaCR = matrices.criteriaCR;
                     goalMatrix_1 = this_1.ahpService.getGoalMatrix(prioritiesMatrix_1);
                     setTimeout(function (_) { return _this.chartService.drawStackedChart(document.getElementById('chartDisplay' + i), _this.logicService.prepareStackedChartData(_this.project.alternatives, _this.project.criteria, prioritiesMatrix_1), goalMatrix_1, 'Evaluación', 'Alternativa', 'Criterio'); }, 3000);
                 }
@@ -719,6 +726,18 @@ var PrincipalComponent = (function () {
         var matrices = this.ahpService.calculateDecision(this.project.alternatives.length, this.project.criteria.length, this.alternativesComparisons, this.criteriaComparisons);
         prioritiesMatrix = matrices.prioritiesMatrix;
         this.criteriaPriorities = matrices.criteriaPriorities;
+        this.alternativesCRVector = matrices.alternativesCRVector;
+        for (var i = 0; i < this.alternativesCRVector.length; i++) {
+            if (this.alternativesCRVector[i] > 10)
+                this.alternativesCRStatus[i] = "Inconsistente";
+            else
+                this.alternativesCRStatus[i] = "OK";
+        }
+        this.criteriaCR = matrices.criteriaCR;
+        if (this.criteriaCR > 10)
+            this.criteriaCRStatus = "Inconsistente";
+        else
+            this.criteriaCRStatus = "OK";
         this.goalMatrix = this.ahpService.getGoalMatrix(prioritiesMatrix);
         this.goalMatrixReady = true;
         window.scrollTo(0, document.body.scrollHeight);
@@ -1427,6 +1446,7 @@ var Routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["a" /* RouterModule 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__logic_service__ = __webpack_require__("../../../../../src/app/services/logic.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_service__ = __webpack_require__("../../../../../src/app/services/constants.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AHPService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1439,9 +1459,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var AHPService = (function () {
-    function AHPService(logicService) {
+    function AHPService(logicService, constantsService) {
         this.logicService = logicService;
+        this.constantsService = constantsService;
     }
     AHPService.prototype.calculateDecision = function (alternatives, criteria, alternativesComparisons, criteriaComparisons) {
         var alternativesMatrices = [];
@@ -1449,12 +1471,16 @@ var AHPService = (function () {
         var alternativesPriorities = [];
         var criteriaPriorities = [];
         var prioritiesMatrix = [];
+        var alternativesCRVector = [];
+        var criteriaCR;
         for (var i = 0; i < criteria; i++) {
             alternativesMatrices[i] = this.formMatrix(alternativesComparisons[i], alternatives);
             alternativesPriorities[i] = this.calculatePriorities(alternativesMatrices[i]);
+            alternativesCRVector[i] = this.calculateCR(alternativesMatrices[i], alternativesPriorities[i]);
         }
         criteriaMatrix = this.formMatrix(criteriaComparisons, criteria);
         criteriaPriorities = this.calculatePriorities(criteriaMatrix);
+        criteriaCR = this.calculateCR(criteriaMatrix, criteriaPriorities);
         for (var i = 0; i < alternatives; i++) {
             prioritiesMatrix[i] = [];
             for (var j = 0; j < criteria; j++) {
@@ -1462,7 +1488,9 @@ var AHPService = (function () {
             }
         }
         return { criteriaPriorities: criteriaPriorities,
-            prioritiesMatrix: prioritiesMatrix };
+            prioritiesMatrix: prioritiesMatrix,
+            alternativesCRVector: alternativesCRVector,
+            criteriaCR: criteriaCR };
     };
     AHPService.prototype.getGoalMatrix = function (prioritiesMatrix) {
         var goalMatrix = [];
@@ -1573,14 +1601,32 @@ var AHPService = (function () {
             finalVector: finalVector
         };
     };
+    AHPService.prototype.calculateCR = function (matrix, vector) {
+        var alphaMaxVector = [];
+        var alphaMax = 0;
+        // Add the columns of the Matrix
+        for (var j = 0; j < matrix.length; j++) {
+            alphaMaxVector[j] = 0;
+            for (var i = 0; i < matrix.length; i++) {
+                alphaMaxVector[j] += matrix[i][j];
+            }
+        }
+        for (var i = 0; i < vector.length; i++) {
+            alphaMax += vector[i] * alphaMaxVector[i];
+        }
+        var cI = (alphaMax - vector.length) / (vector.length - 1);
+        var cRI = this.constantsService.getRandomConsistencyIndex(vector.length);
+        var cR = (cI / cRI) * 100;
+        return cR;
+    };
     return AHPService;
 }());
 AHPService = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__logic_service__["a" /* LogicService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__logic_service__["a" /* LogicService */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__logic_service__["a" /* LogicService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__logic_service__["a" /* LogicService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__constants_service__["a" /* ConstantsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__constants_service__["a" /* ConstantsService */]) === "function" && _b || Object])
 ], AHPService);
 
-var _a;
+var _a, _b;
 //# sourceMappingURL=ahp.service.js.map
 
 /***/ }),
@@ -1893,6 +1939,21 @@ var ConstantsService = (function () {
     };
     ConstantsService.prototype.getNodeRadius = function () {
         return 10; // canvas units
+    };
+    ConstantsService.prototype.getRandomConsistencyIndex = function (size) {
+        var rCI = {
+            1: 0,
+            2: 0,
+            3: 0.58,
+            4: 0.9,
+            5: 1.12,
+            6: 1.24,
+            7: 1.32,
+            8: 1.41,
+            9: 1.45,
+            10: 1.49,
+        };
+        return rCI[size];
     };
     return ConstantsService;
 }());
