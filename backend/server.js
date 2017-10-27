@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 
 // My own Modules ------------------------------------------------------
 const usersRoute = require('./routes/user.route');
-const projectsRoute = require('./routes/projects.route')
+const projectsRoute = require('./routes/project.route')
 const config = require('./config/database');
 
 // Definitions----------------------------------------------------------
