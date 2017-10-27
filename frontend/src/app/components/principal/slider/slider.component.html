@@ -1,0 +1,11 @@
+﻿<div class="shell" #shell>
+  <div class="fill" [style.width.px]="width" [style.background]="gradient"></div>
+  <div class="track" [style.width.px]="width"></div>
+  <div class="thumb" [style.left.px]="position" [style.webkitTransform]="scale"
+       [style.MozTransform]="scale" [style.msTransform]="scale"></div>
+  <div class="value" [style.left.px]="position">{{value}}</div>
+  <input class="slider" type="range" min="0" max="{{sliderMaxValue}}"
+         #slider (input)="move(slider.value)" [(ngModel)]="comparison"/>
+</div>
+<hr>
+

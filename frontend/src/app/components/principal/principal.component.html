@@ -1,0 +1,240 @@
+﻿<app-side-menu [project]="project"
+               [criteriaPairwise]="criteriaPairwise"
+               [alternativesPairwise]="alternativesPairwise"
+               (notifyNodeChanges)="onNodeChanges($event)"
+               (notifyCalculateDecision)="onCalculateDecision($event)"
+               (notifySaveProject)="onSaveProject($event)"></app-side-menu>
+
+<div id="workspace">
+  <div class="page-header text-center">
+    <h1>Objetivo: {{project.name}}</h1>           
+  </div>
+  <hr>
+
+  <div class="page-header text-center">
+    <h1>Criterios</h1>      
+  </div>
+  <div *ngFor="let criterion of project.criteria">
+    <hr id="Criterion={{criterion.name}}">
+    <div class="form-group">
+      <label>Nombre:</label>
+      <div *ngIf="project.imMaster; then enabledEditCriteria else disabledEditCriteria"></div>
+      <ng-template #enabledEditCriteria>
+        <input type="text" class="form-control" placeholder="Nombre del Criterio" [(ngModel)]="criterion.name">
+      </ng-template>
+      <ng-template #disabledEditCriteria>
+        <input type="text" class="form-control" placeholder="Nombre del Criterio" [(ngModel)]="criterion.name" disabled>
+      </ng-template>
+    </div>
+    <br>
+    <div class="form-group">
+      <label>Descripción</label>
+      <div *ngIf="project.imMaster; then enabledEditCriteriaDescription else disabledEditCriteriaDescription"></div>
+      <ng-template #enabledEditCriteriaDescription>
+        <textarea class="form-control" rows="2" [(ngModel)]="criterion.description"></textarea>
+      </ng-template>
+      <ng-template #disabledEditCriteriaDescription>
+        <textarea class="form-control" rows="2" [(ngModel)]="criterion.description" disabled></textarea>
+      </ng-template>
+    </div>        
+    <hr>
+  </div>
+
+  <div class="page-header text-center">
+    <h1>Alternativas</h1>           
+  </div>
+  <div *ngFor="let alternative of project.alternatives">
+    <hr id="Alternative={{alternative.name}}">
+    <div class="form-group">
+      <label>Nombre:</label>
+      <div *ngIf="project.imMaster; then enabledEditAlternatives else disabledEditAlternatives"></div>
+      <ng-template #enabledEditAlternatives>
+        <input type="text" class="form-control" placeholder="Nombre de la Alternativa" [(ngModel)]="alternative.name">
+      </ng-template>
+      <ng-template #disabledEditAlternatives>
+        <input type="text" class="form-control" placeholder="Nombre de la Alternativa" [(ngModel)]="alternative.name" disabled>
+      </ng-template>
+    </div>
+    <br>
+    <div class="form-group">
+      <label>Descripción</label>
+      <div *ngIf="project.imMaster; then enabledEditAlternativesDescription else disabledEditAlternativesDescription"></div>
+      <ng-template #enabledEditAlternativesDescription>
+        <textarea class="form-control" rows="2" [(ngModel)]="alternative.description"></textarea>
+      </ng-template>
+      <ng-template #disabledEditAlternativesDescription>
+        <textarea class="form-control" rows="2" [(ngModel)]="alternative.description" disabled></textarea>
+      </ng-template>
+
+    </div>
+    <hr>
+  </div>
+
+  <div *ngIf="project.imMaster">
+    <div class="page-header text-center">
+      <h1>Evaluadores</h1>           
+    </div>
+    <div *ngFor="let evaluator of project.evaluators; let i = index">
+      <hr id="Evaluator={{evaluator.email}}">
+      <form class="form-inline" (submit)="onSearchEvaluator(evaluator)">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="text" [(ngModel)]="evaluator.email" name='email' class="form-control" placeholder="evaluador@mail.com">
+          <button type="submit" class="btn btn-success">Buscar</button>
+        </div>
+        <div class="form-group">
+          <label>Nombre:</label>
+          <input type="text" [(ngModel)]="evaluator.name" name='name' class="form-control" placeholder="Nombre del evaluador" disabled>
+        </div>
+      </form>
+      <div *ngIf="evaluator.status then evaluatorResults else notResultsYet"></div>
+      <ng-template #evaluatorResults>
+        <div id="chartDisplay{{i}}"></div>
+      </ng-template>
+      <ng-template #notResultsYet>
+        <label>No ha realizado la evaluación</label>
+      </ng-template>
+      
+    </div>
+  </div>
+
+  <div class="page-header text-center">
+    <h1>Diagrama de jerarquías</h1>           
+  </div>
+  <canvas id="diagram" #diagram></canvas>
+
+  <div class="page-header text-center">
+    <h1>Prioridades</h1>      
+  </div>
+  <div *ngFor="let criterionPairwise of criteriaPairwise; let i = index">
+    <hr id="Priority={{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}">
+    <h3 style="text-align:center;">{{project.criteria[criterionPairwise.indexItem1].name}} vs {{project.criteria[criterionPairwise.indexItem2].name}}</h3>
+    <app-slider [(comparison)]="criteriaComparisons[i]" ></app-slider>
+  </div>
+
+  <div class="page-header text-center">
+    <h1>Evaluación</h1>      
+  </div>
+  <div *ngFor="let criterion of project.criteria; let i = index">
+    <hr id="CriteriaContext={{criterion.name}}">
+    <h2>Evaluación en el contexto de: {{criterion.name}}</h2>
+    <div *ngFor="let alternativePairwise of alternativesPairwise; let j = index">
+      <h3 style="text-align:center;">{{project.alternatives[alternativePairwise.indexItem1].name}} vs {{project.alternatives[alternativePairwise.indexItem2].name}}</h3>
+      <app-slider [(comparison)]="alternativesComparisons[i][j]"></app-slider>
+    </div>
+  </div>
+
+  
+  <div *ngIf="goalMatrixReady" class="page-header text-center" id="Results">
+    <h1>Resultados</h1>      
+    
+    <h3 style="text-align:center;" id="nodesChart">Gráfica de relaciones entre los nodos</h3>
+    <div id="nodesChartDisplay" style="height: 400px;"></div>
+    <br><br>
+    
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-8">
+          <h3 style="text-align:center;" id="criteriaChart">Gráfica de criterios</h3>
+          <div id="criteriaChartDisplay"></div>  
+        </div>
+        <div class="col-sm-4">
+          <h3 style="text-align:center;">Vector de Criterios</h3>
+          <table class="table table-hover table-condensed table-bordered">
+            <thead>
+              <tr>
+                <th>Criterios</th>
+                <th>Preferencia</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let criterion of project.criteria; let i = index">
+                <td>{{criterion.name}}</td>
+                <td>{{(criteriaPriorities[i]*100).toFixed(1)}} %</td>
+              </tr>
+            </tbody>
+          </table>      
+        </div>
+      </div>
+    </div>
+  
+    <h3 style="text-align:center;" id="table">Matriz de resultados</h3>
+    <table class="table table-hover table-condensed table-bordered">
+      <thead>
+        <tr>
+          <th>Alternativas</th>
+          <th *ngFor="let criterion of project.criteria">{{criterion.name}}</th>
+          <th>Objetivo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let alternative of project.alternatives; let i = index">
+          <td>{{alternative.name}}</td>
+          <td *ngFor="let criterion of project.criteria; let j = index">
+            {{(goalMatrix[i][j]*100).toFixed(1)}} %
+          </td>
+          <td>{{(goalMatrix[i][goalMatrix[i].length-1]*100).toFixed(1)}} %</td>
+        </tr>
+      </tbody>
+    </table>
+    <br><br>
+  
+    <h3 style="text-align:center;" id="chart">Gráfica de resultados</h3>
+    <div id="chartDisplay"></div>
+    <br><br>
+  
+    <h3 style="text-align:center;">Matriz global de criterios</h3>
+    <table class="table table-hover table-condensed table-bordered">
+      <thead>
+        <tr>
+          <th>Criterios</th>
+          <th *ngFor="let evaluator of evaluatorsNames">{{evaluator.name}}</th>
+          <th>Prioridad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let criterion of project.criteria; let i = index">
+          <td>{{criterion.name}}</td>
+          <td *ngFor="let evaluator of evaluatorsNames; let j = index">
+            {{(globalCriteriaMatrix[i][j]*100).toFixed(1)}} %
+          </td>
+          <td>{{(globalCriteriaMatrix[i][globalCriteriaMatrix[i].length-1]*100).toFixed(1)}} %</td>
+        </tr>
+      </tbody>
+    </table>
+    <br><br>
+  
+    <h3 style="text-align:center;" id="chart">Evaluación global de Criterios</h3>
+    <div id="globalCriteriaChartDisplay"></div>
+    <br><br>
+  
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-8">
+          <h3 style="text-align:center;">Decision Global</h3>
+          <div id="globalChartDisplay"></div>
+        </div>
+        <div class="col-sm-4">
+          <h3 style="text-align:center;">Vector de Resultados</h3>
+          <table class="table table-hover table-condensed table-bordered">
+            <thead>
+              <tr>
+                <th>Alternativas</th>
+                <th>Preferencia</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let alternative of project.alternatives; let i = index">
+                <td>{{alternative.name}}</td>
+                <td>{{(globalDecisionVector[i]*100).toFixed(1)}} %</td>
+              </tr>
+            </tbody>
+          </table>      
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
