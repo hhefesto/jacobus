@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 
 // My Modules -------------------------------------------------------
-const projectSchema = require('./project.schema');
+const projectSchema = require('./projects.schema');
 
 const Project = mongoose.model('Project', projectSchema);
 
