@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 
 // My Modules -----------------------------------------------------------
 const User = require('../database/users/user.model');
-const Project = require('../database/projects/project.model');
+const Project = require('../database/projects/projects.model');
 const config = require('../config/database');
 const emailNotifier = require('../services/email.service');
 const dashboardMessage = require('../config/email').dashboardMessage;
