@@ -3,7 +3,7 @@
 const express = require('express');
 
 // My own Modules ------------------------------------------------------
-const Project = require('../database/projects/project.model');
+const Project = require('../database/projects/projects.model');
 
 // Definitions ---------------------------------------------------------
 const router = express.Router();
