@@ -1983,7 +1983,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 // true = Deploy, false = Development
-var deploy = true;
+var deploy = false;
 var DeployService = (function () {
     function DeployService() {
     }
